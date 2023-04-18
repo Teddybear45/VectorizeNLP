@@ -17,8 +17,9 @@ review_class = {
     "description": "A customer review of a restaurant",
     "vectorizer": "text2vec-transformers",
     "properties": [
-        {"dataType": ["string"], "name": "review"},
-        {"dataType": ["boolean"], "name": "sentiment"}]
+        {"dataType": ["string"], "name": "review", "description": "The review text"},
+        {"dataType": ["boolean"], "name": "sentiment", "description": "Whether the review is positive or negative"},
+    ],
 }
 
 client.schema.create_class(review_class)
@@ -40,21 +41,16 @@ with open(reviews_file_loc, 'r') as tsvfile:
     for row in reader:
         rows.append(dict(row))
 
+# Configure a batch process
+with client.batch as batch:
+    batch.batch_size = 100
+    # Batch import all Questions
+    for i, d in enumerate(rows):
+        print(f"importing review: {i + 1}")
 
-print(rows)
+        properties = {
+            "review": d["Review"],
+            "sentiment": bool(int(d["Liked"])),
+        }
 
-#
-# # Configure a batch process
-# with client.batch as batch:
-#     batch.batch_size = 100
-#     # Batch import all Questions
-#     for i, d in enumerate(data):
-#         print(f"importing question: {i + 1}")
-#
-#         properties = {
-#             "answer": d["Answer"],
-#             "question": d["Question"],
-#             "category": d["Category"],
-#         }
-#
-#         client.batch.add_data_object(properties, "Question")
+        client.batch.add_data_object(properties, "CustomerReview")

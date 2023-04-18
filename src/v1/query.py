@@ -11,14 +11,25 @@ client = weaviate.Client(
 )
 
 
-nearText = {"concepts": [""]}
+# nearText = {"concepts": ["wait staff sentiment and overall restaurant ambience"]}
+nearText = {"concepts": ["portion size"]}
 
 result = (
     client.query
-    .get("Question", ["question", "answer", "category"])
+    .get(class_name="CustomerReview", properties=["review"])
     .with_near_text(nearText)
-    .with_limit(2)
+    .with_limit(9)
     .do()
 )
 
 print(json.dumps(result, indent=4))
+
+
+
+# result = (
+#     client.query
+#     .get("Question", ["question", "answer", "category"])
+#     .with_near_text(nearText)
+#     .with_limit(4)
+#     .do()
+# )
