@@ -11,7 +11,7 @@ client = weaviate.Client(
 )
 
 
-nearText = {"concepts": ["bio"]}
+nearText = {"concepts": [""]}
 
 result = (
     client.query
