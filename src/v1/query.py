@@ -12,7 +12,7 @@ client = weaviate.Client(
 
 
 # nearText = {"concepts": ["wait staff sentiment and overall restaurant ambience"]}
-nearText = {"concepts": ["portion size"]}
+nearText = {"concepts": ["The staff are now not as friendly, the wait times for being served are horrible, no one even says hi for the first 10 minutes."]}
 
 result = (
     client.query
