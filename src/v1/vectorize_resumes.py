@@ -22,7 +22,7 @@ resume_class = {
     ],
 }
 
-client.schema.create_class(resume_class)
+# client.schema.create_class(resume_class)
 
 # ===== import data =====
 
