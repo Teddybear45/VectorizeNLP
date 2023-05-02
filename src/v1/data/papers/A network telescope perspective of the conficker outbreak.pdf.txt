@@ -1,0 +1,1338 @@
+A Network Telescope perspective of the Conﬁcker
+
+outbreak
+
+Barry Irwin
+
+Security and Networks Research Group (SNRG)
+
+Department of Computer Science, Rhodes University, Grahamstown, South Africa
+
+Email: b.irwin@ru.ac.za
+
+Abstract—This paper discusses a dataset of some 16 million
+packets targeting port 445/tcp collected by a network telescope
+utilising a /24 netblock in South African IP address space. An
+initial overview of the collected data is provided. This is followed
+by a detailed analysis of the packet characteristics observed,
+including size and TTL. The peculiarities of the observed target
+selection and the results of the ﬂaw in the Conﬁcker worm’s
+propagation algorithm are presented. An analysis of the 4 million
+observed source hosts is reported by grouped by both packet
+counts and the number of distinct hosts per network address
+block. Address blocks of size /8, 16 and 24 are used for groupings.
+The localisation, by geographic region and numerical proximity,
+of high ranking aggregate netblocks is highlighted. The paper
+concludes with some overall analyses, and consideration of the
+application of network telescopes to the monitoring of such
+outbreaks in the future.
+
+Index Terms—Conﬁcker, Zotob, malware, network telescope
+
+I. INTRODUCTION
+
+T HIS paper explores the application and value of the
+
+use of a network telescope [1], [2] in the tracking and
+monitoring of a global malware outbreak, over the period
+from August 2005 to September 2009. During this period, the
+volume of trafﬁc observed arriving at the research telescope
+destined for port 445/tcp grew dramatically, particularly over
+the last 14 months of the dataset, reaching a peak of nearly
+two orders of magnitude higher than the previously observed
+trafﬁc baseline. Much of this can be likely attributed to the
+prevalence of the Conﬁcker worm [3], also known as Kido
+and DownAdUp [4].
+
+This malware exploits a vulnerability in the Microsoft RPC
+stack detailed in the Microsoft MS08-067 [5] security bulletin
+released on 23rd October 2008. The vulnerability exploited is
+similar to those discovered in July 2003 detailed in MS03-
+026 [6] and later in MS03-039 [7] — and subsequently
+exploited by the Blaster and Welchia worms in August of
+that year [8]. A further vulnerability in the RPC stack was
+exploited by Sasser in April 2004, taking advantage of the
+vulnerability disclosed in MS04-011 some seventeen days
+previously [9]. The problems with the RPC/DCOM stack in
+Microsoft Windows Family operating systems continued and
+MS06-40 released in September 2006 [10], patched a further
+vulnerability that was exploited by various malware such as
+Mocbot. Given this history of vulnerability, and the widespread
+adoption of the Windows operating platform and the rapid de-
+velopment of code exploiting these vulnerabilities, researchers
+
+were justiﬁably concerned when the MS08-067 vulnerability
+was announced. A detailed analysis of the Conﬁcker malware
+is beyond the scope of this research. For details on the actual
+origins, and analysis from a payload and reverse engineering
+perspective, readers are encouraged to consult in particular
+the work done by SRI [11] and Symantec [12] on reverse
+engineering and documenting the spread.
+
+This paper presents a discussion of how the spread of this
+malware was observed from the perspective of the network
+telescope system system, using data as described in Section
+II. An overview of the evolution of the worm is presented
+along with a time-line of the major points in the evolution
+of this software in Section III. This is shown to match fairly
+accurately with the observed changes in trafﬁc presented in
+Section IV. An analysis of the trafﬁc is presented in Section
+V, with a focus of on the trafﬁc distribution across the target
+addresses in Section VI. These latter two sections present
+evidence for the strong likelihood of the majority of the
+445/tcp trafﬁc being Conﬁcker related. The paper concludes
+with a reﬂection on the application of a network telescope to
+the monitoring of this kind of event, and the views of trafﬁc
+as observed by other sensors.
+
+II. DATA SOURCE
+
+This research was carried out using TCP/IP packet data
+collected over a 48 month period period from August 2005
+to September 2009, using a /24 IP network address block,
+within South African address space. The address space was
+connected to a passive network telescope [13] operated by the
+researcher [14]. This data includes the period of the outbreak
+of the Conﬁcker worm in late 2008 on which this paper
+focusses. What is important to bear in mind when analysing
+the data collected using the Rhodes University system, is that
+one of the shortcomings of the current network telescope
+setup is that only the ﬁrst packet of the potential TCP 3-
+way handshake is actually captured. Since the handshake, by
+design, cannot complete, no data payload can be captured.
+Due to this limitation it can only be inferred, albeit with a
+high level of certainty, that the increase in observed trafﬁc is
+directly related to the Conﬁcker malware. It is believed that
+the majority of the recorded connection attempts are automated
+connections from Conﬁcker, but there is certainly a component
+which is scanning activity from other sources looking for
+operational targets which may also be vulnerable to the MS08-
+067 issue.
+
+III. CONFICKER EVOLUTIONARY TIME-LINE
+
+The evolution of the threat posed by the Conﬁcker malware
+can be traced back to the release of the MS08-067 advisory
+on 23rd October 2008 as an emergency, out of sequence,
+patch by Microsoft after exploitation of the vulnerability was
+observed in the wild. One of the issues to be aware of when
+analysing Conﬁcker and research around the threats, relates to
+the two different naming conventions used by Microsoft, and
+the Conﬁcker Working Group (CWG). The former appears to
+be in more widespread use. These differences are shown Table
+I. In this document the Microsoft naming conventions are
+used. When analysing the trafﬁc, inﬂexion points can be seen
+relating to the version changes in the Conﬁcker malware, as
+seen in Section IV-B. A more detailed timeline of the evolution
+of this threat is maintained by the CWG1.
+
+Table I
+
+CONFICKER NAMING
+
+Date
+20 Nov 2008
+28 Dec 2008
+20 Feb 2009
+4 Mar 2009
+8 Apr 2009
+
+Microsoft
+Conﬁcker.A
+Conﬁcker.B
+Conﬁcker.C
+Conﬁcker.D
+Conﬁcker.E
+
+CWG
+
+Conﬁcker.A
+Conﬁcker.B
+Conﬁcker.B++
+Conﬁcker.C
+
+-
+
+IV. TELESCOPE TRAFFIC OBSERVATIONS
+
+Observed network trafﬁc destined to 445/tcp makes for an
+interesting case study on a number of fronts. Firstly, it is
+the single most signiﬁcant contributor to the total, both in
+terms of the number of packets and source addresses observed.
+Secondly, it is used by the Microsoft Windows family of
+operating systems for RPC/DCOM communications, including
+ﬁle sharing, and is usually enabled on such systems. The
+popularity of the deployment of these systems make this a
+historically inviting target when vulnerabilities are found, with
+widespread exploitation. Furthermore, this port is generally
+ﬁrewalled by most organisations, and often by home users as
+well, although usually only for inbound trafﬁc.
+
+A. Overview
+
+Trafﬁc destined to port 445/tcp as a whole, can be seen
+to be fairly persistent over the entire duration of the network
+telescope observation, being observed on all but one of the
+1 429 days having data (and 98.1% of hourly observations)
+within the dataset. Over the period it was consistently ranked
+in the top ten ports observed, by both month and year. During
+the observation period, packet counts for trafﬁc destined to
+port 445/tcp was the top ranked in 10 of the 17 quarters under
+study, with its lowest positions being 4th in Q1 2007 and
+Q4 2008. Figure 1 shows the prevalence of this trafﬁc over
+the observation period. Data shown in this ﬁgure reﬂects only
+that TCP trafﬁc destined to 445/tcp that has the SYN ﬂag
+set, and hence can be considered ‘active’ (in terms of this
+trafﬁc could potentially elicit a valid response from a target).
+This trafﬁc also accounted for 41.4% of the trafﬁc overall,
+
+Figure 1. TCP packet received on port 445 by day.
+
+consisting of some 16 893 920 packets. The rapid increase in
+trafﬁc from approximately 1 000 packets/day (ppd) in October
+2008 through to nearly 100 000 ppd by the end of September
+2009 can be clearly seen. The beneﬁt of the long collection
+baseline was realised in this comparison, in terms of being
+able to quantify just how large the increase in trafﬁc was.
+
+The spike in observed activity the in early portion of
+Figure 1 is most probably attributable to the Zotob worm [15]
+exploiting a vulnerability disclosed on 9th August 2005 in
+MS05-039 [16], [17], either from the worm itself or related
+scanning in response to this event by individuals looking
+for vulnerable hosts. Trafﬁc levels had, however, decreased
+and largely normalised by November 2005 and continued to
+drop though to mid October 2008. This gradual decrease is
+likely due to the increased uptake of automated patching of
+systems though the Microsoft Windows Update mechanism,
+the release of Service Packs for Windows XP (SP3 - April
+2008) and Windows Vista (SP1 - March 2008, SP2 - April
+2009) resulting in the remediation of vulnerabilities in the
+RPC service. More signiﬁcantly the lack of any signiﬁcant
+vulnerabilities affecting this protocol during the observation
+period, would have reduced the incidence of scanning. The
+rapid increase in trafﬁc observed from October 2008 onwards
+can be attributed to activities surrounding the exploitation of
+the MS08-067 vulnerability in Microsoft Windows operating
+systems, most notably by the Conﬁcker worm. The remainder
+of this paper focuses on activity observed from October 2008
+onwards.
+
+B. Conﬁcker Related
+
+The Conﬁcker worm was ﬁrst observed on the 20th/21st of
+November 2008 (depending on time zone), and after almost
+a year, over 7 million infected nodes were observed as still
+infected2. After the 20th of November,
+trafﬁc destined to
+445/tcp constituted 70% of trafﬁc observed. Over the entire
+observation period, 4 002 119 unique hosts (86% of the
+total) were observed sending packets to a destination port
+of 445/tcp. Of these addresses, 95% were observed after the
+20th of November 2008, with only 5 544 (0.14%) having been
+observed prior to the 1st of November 2008. Only 0.3% of
+the IP addresses identiﬁed as having targeted 445/tcp had sent
+any trafﬁc at all, prior to the beginning of November 2008.
+
+This is not the ﬁrst work to have been done on looking
+at Conﬁcker from the perspective of a network telescope,
+
+1http://www.conﬁckerworkinggroup.org/wiki/pmwiki.php/ANY/Timeline
+
+2http://www.shadowserver.org/wiki/pmwiki.php/Stats/Conﬁcker
+
+along with the contribution made by trafﬁc destined to 445/tcp
+on the sensor network. Several points in Figure 3 are worth
+highlighting:
+
+• Although the spike shown at point A ties in with the
+release of the MS08-067 security bulletin, it is not related
+to it, but rather is the result of a burst of classic back-
+scatter packets originated from a unix system located in
+Jordan.
+
+• The ‘birth’ of Conﬁcker on the 21st of November 2008
+(point B) can be seen by the sharp rise in 445/tcp trafﬁc
+as a portion of the whole.
+
+• Conﬁcker.B was released on the 28th of December 2008
+and although there is a spike in total trafﬁc (point C)
+this was not due to Conﬁcker, but a reﬂected back-scatter
+SYN-ACK packets from a web server located in Costa
+Rica.
+
+• Point D indicates a further anomaly in the trafﬁc pattern,
+with the spike caused by a ﬂood of 159 000 ICMP TTL
+expired messages, received from a host in China on the
+17th and 18th of February 2009.
+
+• The spike in late February 2009 (point E) can be attrib-
+
+uted to the release of Conﬁcker.C on the 20th.
+
+• Point F is worth noting in that the drop in recorded
+trafﬁc was due to a series of extended network outages
+adversely affecting Rhodes University’s upstream Internet
+connection over the period 24th-26th June 2009.
+
+C. Conﬁcker Outbreak
+
+Analysis of the data in the ﬁrst few days of the Conﬁcker
+outbreak revealed some interesting trends. The ﬁrst of these
+is illustrated in Figure 4, which plots data relating to trafﬁc
+received on 445/tcp during the period 21st − 24th November
+2008. Times noted in the Figure are SAST (GMT+2:00). What
+is immediately noticeable is that while the packets follow a
+rough circadian rhythm, this trend is even more noticeable
+when the number of distinct sources for each hour interval are
+plotted. Similar results were found with the data processed in
+the CAIDA Conﬁcker report [18]. Considering the 24 hour
+period from midnight on the 21st November, the number of
+observed sources per hour can be seen to climb rapidly, from
+fewer than ten at 05h00 to over 250 by midnight the following
+day. What is interesting is that there is a large increase in
+packets observed around 06h00, yet only twenty source hosts
+had been observed at this stage. From this point the packet
+rate per hour dropped dramatically and the host count started
+to climb — in essence, more hosts were sending relatively
+fewer datagrams. By 16h00 trafﬁc had reached a low point and
+subsequently started to increase again, with a rapid growth in
+the number of sources observed; a high sustained rate being
+maintained for nearly ten hours before dropping back. This is
+pattern can be seen to be repeated over the next two days.
+
+An interesting anomaly was found in the data for 445/tcp,
+with a signiﬁcant spike in scanning activity detected over a
+period from late on the 30th September, through to the evening
+of the 1st of October 2008. This increase in scanning was
+particularly noticeable, due to there being almost no trafﬁc
+targeting 445/tcp in the days leading up to this, and very little
+
+Figure 2. Trafﬁc November 2008 — July 2009
+
+Figure 3. Protocol breakdown (November 2008 — July 2009)
+
+with some detailed analysis having been performed by CAIDA
+researchers in [18], and the subsequent release of a portion of
+their 3 Days of Conﬁcker dataset [19]. What is novel in this
+paper is the ﬁne level of detail at which it has been performed
+along with the use of data from a single /24 network telescope,
+rather than the aggregated level previously reported utilising
+the CAIDA /8 telescope, and a further dataset gathered on
+a /16 netblock. The discussion below focuses on the trafﬁc
+considered Conﬁcker related from mid October 2008 through
+to the end of the dataset at the end of September 2009, in
+effect covering nearly a year of activity related to the MS08-
+067 vulnerability.
+
+An overview of the total trafﬁc observed by the telescope
+system is shown in Figure 2 as the calculated average number
+of packets received per IP addresses in the monitored range.
+A number of distinct spikes in the trafﬁc are noticeable, along
+with the general increase in trafﬁc over time. The increase is,
+however, not nearly as rapid as that observable in the latter part
+of Figure 1. Particularly notable events are the large spike on
+28th October 2008, followed by a rapid climb on the 21st
+November 2008. A second rapid increase can be seen on
+1st January 2009, with a consistent increase in trafﬁc rates
+observed though to mid February, and a large increase in
+activity on the 28th. This is followed by a sharp drop-off mid
+March and a small spike prior to 1st April. From this point
+the trafﬁc continues to increase, other than two dips which
+were caused by network outages. On initial observation, these
+periods seem to coincide to those outlined in the evolution
+timeline in Table I.
+
+Looking a little deeper, and analysing the composition of the
+trafﬁc down by protocol, one can see that the spikes observed
+cannot be correlated directly to activity on port 445/tcp. This
+detailed breakdown of the same dataset and time period as
+previously shown in Figure 2 can be seen in Figure 3. In
+the detailed plot, ICMP and UDP trafﬁc have been shown
+
+TOP 5 COUNTRIES - 1st OCTOBER 2009
+
+Table II
+
+Rank CC CountP ackets CountSource CountDest
+249
+231
+249
+177
+157
+
+BR
+FR
+US
+JP
+PH
+
+1
+2
+3
+4
+5
+
+2 203
+1 551
+1 877
+654
+573
+6 858
+
+625
+388
+279
+167
+155
+1 614
+
+Total
+
+Figure 4. Early days of Conﬁcker: 21st − 24th November 2008
+
+Figure 5. Early reconnaissance: 30th September — 2nd October 2008
+
+afterwards. A plot of the relevant trafﬁc is presented in Figure
+5. The trafﬁc is also seen to originate from a relatively high
+number of sources, with 3 476 IP addresses being logged
+between 03h00 and 18h00 on the 1st of October, having
+sent some 14 808 packets targeting 445/tcp. Top geopolitical
+sources as determined by geolocation tools were Brazil (BR),
+France (FR), the USA (US), Japan (JP) and the Philippines
+(PH). Together these accounting for nearly half (46%) of the
+sources during this period, a summary of which is shown in
+Table II. Sources were observed from 100 countries, although
+only 30 of these had more than twenty sources.
+
+Without payloads, it is impossible to determine the exact
+nature of this trafﬁc, or the means of its generation. It
+could plausibly be activity from the Gimmiv trojan, although
+it was noted that there were problems with its replication
+mechanisms. Another possibility is that
+it could be some
+custom malware utilising the Chinese exploit kit based on the
+Gimmiv trojan. It is nonetheless interesting to note that there is
+a fairly even distribution across the entire monitored IP range,
+in contrast to what is seen in Section VI. The majority of
+the sources (99%) scanned less than ten target addresses, with
+1832 (52%) only probing one host. Only three hosts scanned
+more than 100 addresses, while the majority of sources sent
+two packets which were in relatively quick succession, before
+disappearing.
+
+It
+
+is the researcher’s hypothesis that
+
+there is a strong
+likelihood of this having been a distributed scanning attempt,
+with multiple sources scanning to look for vulnerable hosts
+possibly for further targeted exploitation, or as a means of
+seeding initial distribution points for later malware release.
+The fact that such a high number of hosts only probed a
+
+single target points to a well co-ordinated, distributed scan,
+or these addresses possibly being used as a decoy scan. The
+three top hosts were determined to be in Taiwan (TW) and
+the USA, and are most likely the real hosts. This is supported
+by the fact that hosts that are geolocated as originating from
+the Philippines (PH), Croatia (HR), Turkey (TR) and Austria
+(AT) all have TTL values above 240. This is highly unlikely
+given the university’s Internet connectivity which had, at the
+time of collection, at least ten hops to get to international
+peering points in London. Further examination of the TTL
+values shows that a signiﬁcant number of the hosts have the
+same TTL values despite being geolocated to vastly different
+parts of the globe, further strengthening the likelihood of
+packet forgery. The fact that only two packets are sent is also
+interesting as generally most TCP/IP stacks send three SYN
+connection attempts before timing out. This could point to the
+fact that custom code was being used with a short time-out,
+or that packets were being constructed using ‘raw’ sockets.
+
+V. PACKET DATA
+
+This section evaluates aspects of the packets received on
+445/tcp by the network telescope, considering the observed
+TTL, packet structure, packet retransmission, and source op-
+erating system.
+
+A. Time to Live
+
+An analysis of the TTL values recorded for all incoming
+trafﬁc destined to 445/tcp showed a very narrow banding
+where it was observed that the values were, with few excep-
+tions, between 50 and 100. This range covers default TTL
+settings for both Windows and unix platforms, having default
+base TTL values of 128 and 64 respectively. This banding
+is further evident when plotted against packet counts for TTL
+values received overall as presented in Figure 6. In this Figure
+the TTL values for 445/tcp packets, can be seen to be largely
+grouped in the 96-128 range, with very few packets recorded
+in the 32-64 and 224-255 ranges. This again provides strong
+evidence towards Microsoft Windows platforms being the ori-
+gin of the packets. This was conﬁrmed by the passive operating
+system ﬁngerprinting that was performed. This would in turn
+lend weight
+to the supposition that when considering the
+number of distinct sources, the packets observed were actually
+generated by the automated scanning modes of the Conﬁcker
+worm.
+
+B. Packet Structure
+
+Based on an analysis of of the datagrams received, the
+majority were found to be of 62 bytes in size. A summary
+
+Figure 6. Packet counts by TTL for 445/tcp
+
+Table III
+
+SIZE OF PACKETS TARGETING 445/TCP
+
+Size CountP acket
+12 207 669
+62
+1 281 603
+66
+423 043
+78
+150 549
+60
+74
+100 043
+
+Total
+
+Packet % CountSource
+3 248 492
+443 325
+153 076
+25 211
+31 278
+
+86.18
+9.04
+2.98
+1.06
+0.70
+99.96
+
+Source %
+85.16
+11.62
+4.01
+0.66
+0.81
+102.26ª
+
+NP ackets = 14 165 097 NSources = 3 814 447
+
+ª This is > 100% as hosts may have sent different size packets
+
+of packet sizes is given in Table III. In this table, it can
+be seen that more than 85% of both the hosts and packets
+match this sizing. This is reached by having a TCP packet
+with no data and encapsulated inside an IP and ﬁnally an
+Ethernet datagram. In order to reach the value of 62 bytes,
+rather than the default of 60, TCP options are set. The
+combination found set most often was “MSS:1460, NOP
+NOP TCP SACK:TRUE”, which accounted for 8 bytes. These
+options enabled the Selective Acknowledgement (SACK) on
+the connection being established, along with a maximum sent
+size of 1 460 bytes. These settings were found to match
+captured Conﬁcker propagation trafﬁc. Thus there is a fairly
+high probability that the TCP SYN packets being sent to ad-
+dresses on the telescope actually originated from the Conﬁcker
+Malware.
+
+This provides an example of how, despite being somewhat
+handicapped by the lack of payloads in a network telescope
+dataset, comparative data from honey-net or other systems
+with higher levels of interaction can be used to augment
+the analysis process. While absolute certainty is not possible
+without payload analysis, researchers can attain a high level
+of conﬁdence in their analyses.
+
+C. Transmission
+
+A further interesting characteristic observed in the 445/tcp
+trafﬁc after the advent of Conﬁcker, is that it has a very
+noticeable signature ‘on the wire’ in terms of the way con-
+nection attempts are made. Most operating system TCP/IP
+stacks will send at least three TCP SYN packets in an attempt
+to establish a connection. By contrast, in the majority of the
+445/tcp trafﬁc received after the 20th of November 2008, one
+observes only two connection attempts. An example of this
+is shown in Figure 7, where source addresses (in the 4th
+column) make two connection attempts approximately three
+seconds apart. Similar behaviour has been observed by [18].
+This was further validated by the researcher with captures of
+live propagation trafﬁc obtained from hosts with conﬁrmed
+Conﬁcker infections.
+
+TRAFFIC TO 445/TCP BY ATTRIBUTED OPERATING SYSTEM
+
+Table IV
+
+Rank
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+Protocol
+Windows
+
+Proxyblocker
+
+MacOS
+FreeBSD
+
+Linux
+NetBSD
+Cisco
+Solaris
+
+Checkpoint
+
+NMAP
+
+Number
+16336052
+
+19401
+10066
+7114
+4361
+3981
+3230
+1910
+1343
+1258
+Total
+
+%
+99.671
+0.118
+0.062
+0.043
+0.026
+0.024
+0.019
+0.011
+0.008
+0.007
+99.992
+
+N=16 389 887
+
+% of Packets attributable to an IP address with an identiﬁed OS
+
+N is calculated as packets received after 2008-11-20 00:00 GMT+2
+
+Considering the total number of sources observed and the
+total number of packets targeting 445/tcp after November 20th,
+these are in a ratio of approximately 1:4, indicating that on
+average most sources scanned two hosts at most. This is
+discussed further in Section VI, where an analysis of the target
+addressing is provided.
+
+D. Operating System Fingerprinting
+
+Operating System attribution was performed using p0f3 -
+a passive operating system ﬁngerprinting tool developed by
+Michal Zalewski. While it is recognised that this method is not
+ﬂawless, and may be skewed by the use of NAT and dynamic
+address allocation, it nevertheless provides a useful measure.
+The results are presented in Table IV. Microsoft Windows
+family platforms accounted for 99.7% of the sources that could
+be attributed, which is is unsurprisingly given the facts that the
+Conﬁcker malware targets these platforms, and the TTL data
+as seen in Section V-A.
+
+VI. TARGET ANALYSIS
+
+Changing focus away from the sources of the trafﬁc to
+the addresses being targeted in the network telescope address
+space, a very uneven distribution pattern is observed. The
+lower half of the monitored space, i.e. 196.x.x.0/25, is tar-
+geted substantially more than the upper half (196.x.x.128/25).
+Particularly heavily targeted is 196.x.x.1, closely followed by
+other addresses in the lower 16. The ﬁrst eight addresses in the
+address block all received more than 100 000 distinct sources.
+This bias is shown in Figure 8, which considers the number
+of distinct sources rather than packets observed for each IP
+address in the monitored range.
+
+The strong bias towards the lower portion of the address
+space can be seen clearly. Notably, the last address in the
+monitored range (196.x.x.255) received a much higher cover-
+age than other IPs in the upper /25 portion. The reason for
+this bias is most likely a naive scanning optimisation, which
+attempts to probe one or more addresses on a range, and if no
+response is received, moves onto another range. The probes to
+the last address on the range may serve a similar purpose. By
+
+3http://lcamtuf.coredump.cx/p0f.shtml
+
+77.28.x.55.4853 > 196.x.y.34.445: S 1323192692:1323192692(0)
+
+1 01:16:21.685360 IP 190.50.x.80.2725 > 196.x.y.3.445: S 2062323770:2062323770(0)
+2 01:16:23.509228 IP
+3 01:16:24.677814 IP 190.50.x.80.2725 > 196.x.y.3.445: S 2062323770:2062323770(0
+4 01:16:26.514630 IP
+5 01:16:27.693010 IP
+6 01:16:29.808481 IP 189.101.x.133.2499 > 196.x.y.3.445: S 3114908412:3114908412(0)
+7 01:16:30.696890 IP
+8 01:16:32.751635 IP 189.101.x.133.2499 > 196.x.y.3.445: S 3114908412:3114908412(0)
+
+77.28.x.55.4853 > 196.x.y.34.445: S 1323192692:1323192692(0)
+79.0.x.248.1731 > 196.x.y.18.445: S 1786561877:1786561877(0)
+
+79.0.x.248.1731 > 196.x.y.18.445: S 1786561877:1786561877(0)
+
+Figure 7. Examples of the two packet repetitions
+
+Figure 8.
+
+445/TCP trafﬁc: Distinct Sources per sensor IP
+
+Figure 9.
+
+445/TCP total trafﬁc received per IP in the sensor network
+
+convention default gateways on most IP networks either make
+use of the ﬁrst or last address in a given subnet.
+
+Considering the packet counts received for each address,
+presents a markedly different picture, as shown in Figure 9.
+A signiﬁcant change in the levels can be seen occurring at
+196.x.x.128, with a drop in recorded trafﬁc of nearly two
+orders of magnitude. The Figure contains the number of
+sources, and the packet count observed for each address. A
+third value is plotted on the right y-axis, being a ratio of the
+number of packet to distinct sources. This value also makes a
+change as the target address moves into the upper half of the
+range, doubling from just over 2 to 4. The dip at the beginning
+of the graph is due to some trafﬁc having been recorded to
+196.x.x.0, which is not normally targeted as it it would be
+regarded as the ‘network address’, rather than a host address.
+This observed bias towards the lower 128 hosts in the
+network is due to a bug in the scanning algorithm implemented
+by Conﬁcker [20], [21]. Due to the way the pseudo random
+number generator works, a 15-bit value is generated and is
+then used in a 16-bit ﬁeld, resulting in the most signiﬁcant bit
+of the 2nd and 4th octets (bytes) in an IPv4 address to being
+zero; in effect limiting these values to the range 0-127. The
+side effect of this is that it signiﬁcantly reduces the portion of
+the Internet that can possibly be scanned [18], [22], limiting it
+to only 25% of total address space — although it will attempt
+to scan all the /8 blocks and half of all /16 blocks. Taking
+this into account, one can use the trafﬁc to the upper 128
+
+address to quantify the other scanning activity present on the
+port that is not attributable to the Conﬁcker Worm, but rather
+other sources.
+
+Looking at the sources of the trafﬁc directed to the lower
+half of the monitored range, 26% (1 049 562) had a 2nd
+octet greater than 127, and 46% (1 842 784) with the last
+octet having a value greater than 127. Common to both these
+groupings were 515 834 hosts. What is interesting is that
+these these could not have been infected by direct scanning,
+although given dynamic addressing they could have had other
+addresses previously, or have changed networks (as is common
+with mobile systems). Infection is still possible though other
+measures such as via the Windows ‘autorun’ mechanism on
+removable media, which was used by the earlier Conﬁcker
+variants. These sources are analysed further in Section VII.
+
+It is worth noting that the differences in trafﬁc observed
+between the upper and lower ranges is substantially more than
+the three times differential described by [22] and attributed to
+this activity. This bug most likely accounts for the fact that
+the a second telescope operated by the researcher recorded
+minimal trafﬁc destined to 445/tcp, since both its 2nd and
+4th octets are greater than 127. In addition to this bug in the
+way random IPs are generated, IP ranges known to belonging
+to security research ﬁrms, and Reserved IPv4 Address space
+are also avoided by the malware. This is an interesting case
+which shows the value in having distributed IP address space
+for monitoring global trends. It is also an argument for chunks
+of contiguous space rather than smaller fragmented blocks as
+advocated with the use of greynets [1].
+
+VII. SOURCE ANALYSIS
+
+Analysing the source address data for the Conﬁcker provides
+an interesting insight, especially when comparing the top
+sources ranked by packet count and host count. These are
+presented in Tables V and VI respectively, and discussed in
+the sections below. The value in discriminating between these
+two means of ranking data is that the ﬁrst quantiﬁed the
+volume, and to some extent the persistence of the infection.
+In contrast, ranking and subsequent analysis by the number of
+distinct sources observed provides a means for assessing how
+widespread the infection and related scanning activity was.
+
+A. Packet Count
+
+Considering the rankings by /8 netblock, 196.0.0.0/8, man-
+aged by AfriNIC, can be seen to have the highest packet
+count by a signiﬁcant margin. It is worth taking note that a
+single host within this block accounted for 23% of the packet
+count in this netblock. Looking at the remainder of the top
+
+ten, over 38% of the total packet count can be observed. The
+numerical sequencing, of the top ten /8 netblocks have very
+close numerical groupings. The allocations within 189.0.0.0/8,
+190.0.0.0/8 and 201.0.0.0./8 are controlled by LACNIC, with
+the remainder of the top ten being under the control of RIPE.
+Three adjacent groups of netblocks are observed. This is most
+likely due to the scanning and propagation mechanisms used
+by the Conﬁcker malware.
+
+This numerical closeness is also evident when considering
+the /16 rankings, with two contiguous address blocks in
+positions one and two. This can also be seen with the two
+blocks in 93.80.0.0/15. In the /24 rankings four contiguous
+blocks can be observed in 196.20.164.0/24, contributing to
+the high rankings of both the 196.20.0.0/16 and subsequently
+196.0.0.0/8 netblocks. However, even combined, these four
+blocks comprising 1024 addresses account for less than a third
+of the volume the top observed host. The trafﬁc attributable
+to individual hosts shows a rather dramatic decrease, with the
+top ranked host of 196.21.218.x accounting for more than two
+and a half-times the sum of the remainder of the top ten hosts.
+A second host from the same /24 netblock appears in 6th
+position.
+
+A comparison of the percentage contribution for each of
+the netblock aggregation levels decreases sharply from the
+level covered by the /8 netblocks. However there is relatively
+little difference between the /24 and /32 levels, largely due
+to the contribution by the hosts in 196.21.218.0/24. It is still
+signiﬁcant that the top host rankings accounted for 2.5% of the
+total, despite there being over 3.8 million hosts observed, even
+more so the percentage of trafﬁc attributable to the top ranked
+hosts. The nearly 80% decrease in composition moving from
+/8 to /16 is an indicator of how widely spread the scanning
+activity was, although the proportion covered (7.9%) is less
+than the 12% observed in the overall dataset, with the values
+for /24 and host level proportions being much closer.
+
+B. Source Count
+
+Rankings of the number of distinct sources observed as
+origins for trafﬁc destined to 445/tcp, aggregated of by net-
+work block is presented in Table VI. This presents a somewhat
+different picture to that discussed in the previous section. This
+ranking provides an indication of how widespread the activity
+was within a particular netblock, and can be used as a means
+of determining infection rates. These are not absolute values,
+and may well be inﬂuenced by the use of NAT and dynamic
+addressing of endpoints, or even a combination of these — as
+is particularly common in modern broadband networks.
+
+At the /8 aggregation level, the ﬁrst eight ranked netblocks
+also occur in the top ten by packet count, with 196.0.0.0/8
+and 93.0.0.0/8 being omitted. These placed 54th (with 14 914
+sources) and 72nd (4 268 sources) respectively. The top four
+aggregated blocks had a fairly equitable portion of the total
+hosts served, at just over 5% each. The top ten accounted for
+over 40% of the total hosts. Again sequential netblock are
+seen to occur indicating a strongly likelihood of propagation
+activities favouring ‘near’ or ‘local’ addresses, although this
+could have been inﬂuenced by some of the other propagation
+
+mechanisms used. This sequential locality is repeated again
+with the /16 aggregation. A strong geopolitical bias can be seen
+at this level, with ﬁve of the top 6 ranks netblocks being under
+the control of Corbina Telecom (AS8402), head-quartered in
+Moscow, Russia.
+
+Finally when considering the top ten /24 netblocks, the top
+source network (196.1.232.0/24) originates from the Sudan
+(SD) operated by SudaTel (AS15706). This is signiﬁcant as
+233 individual IP addresses have been observed out of a
+possible 254 operable host addresses, providing a coverage
+factor of over 90%. Further sequential address blocks can
+be seen with 79.114.134.0/23, and the aggregate block of
+89.179.104.0/22. Other /24 blocks in the top also exhibit both
+numerical and topological (being part of the same ASN in
+global routing tables) closeness. Of interest is that despite
+89.179.0.0/16 containing ﬁve of the top ten /24 netblocks, is
+is not in the top ten when aggregation is performed by /16,
+appearing only in 39th place in these rankings.
+
+VIII. FUTURE WORK
+
+The dataset used in the research can still be further ana-
+lysed, particularly from the point of an extended temporal or
+geopolitical analysis, such as that performed in [14]. Since
+the Conﬁcker outbreak, there has not been another signiﬁcant
+Internet scale event. As such, further exploration of the dataset
+on which this work is based, and other subsequently collected
+datasets may provide better insight into the spread of malware
+and related malicious activity on a global scale.
+
+IX. CONCLUSION
+
+This focused analysis of trafﬁc destined to 445/tcp has
+covered two distinct global malware threats — that of Zotob
+in August 2005, and Conﬁcker in November 2008. In the
+intervening period trafﬁc levels remained consistent, and can
+be attributed to remnants of the Zotob malware and similar
+other software, and scanning by individuals for hosts having
+services on 445/tcp exposed to the Internet at large in order to
+potentially exploit their vulnerability. Over the period of the
+Dataset, and particularly in the last 14 months, trafﬁc destined
+to 445/tcp made a signiﬁcant contribution to the whole. Given
+this, it is important to investigate the nature and origins of the
+datagrams.
+
+While the analysis carried out in this paper is by no means
+complete,
+it provides an example of the kind of focused
+analysis that can be done with a network telescope. The
+evolution of the Conﬁcker worm is plotted. The problem
+with the random scanning and propagation algorithm identiﬁed
+in the reverse engineering of the malware can be clearly
+observed, and this is seen to be a plausible explanation for
+the signiﬁcant difference in trafﬁc observed by the researcher
+between the dataset being considered for this work, and
+others utilising different address space. Furthermore, the work
+presented shows how a network telescope can be used to track
+the spread and distribution dynamics of widespread internet
+worms in the future.
+
+TOP 445/TCP ORIGINS BY PACKET COUNT
+
+Table V
+
+Rank
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+Total
+
+/8
+
+196.0.0.0
+189.0.0.0
+190.0.0.0
+92.0.0.0
+95.0.0.0
+89.0.0.0
+78.0.0.0
+79.0.0.0
+93.0.0.0
+201.0.0.0
+
+count
+1 118 121
+600 718
+586 827
+565 721
+539 401
+494 255
+463 784
+387 708
+367 343
+353 829
+
+%
+7.921
+4.255
+4.157
+4.007
+3.821
+3.501
+3.285
+2.746
+2.602
+2.506
+38.801
+
+/16
+
+196.21.0.0
+196.20.0.0
+78.106.0.0
+93.80.0.0
+93.81.0.0
+95.28.0.0
+89.178.0.0
+95.24.0.0
+190.51.0.0
+196.205.0.0
+
+count
+287 270
+234 092
+91 845
+91 248
+83 169
+76 423
+75 996
+68 342
+54 041
+53 587
+
+%
+2.035
+1.658
+0.650
+0.646
+0.589
+0.541
+0.538
+0.484
+0.382
+0.379
+7.902
+
+/24
+
+196.21.218.0
+196.20.164.0
+196.20.17.0
+196.14.169.0
+196.20.165.0
+196.38.187.0
+196.20.167.0
+196.20.166.0
+196.20.13.0
+196.20.140.0
+
+count
+266 790
+22 734
+21 655
+21 576
+20 762
+20 077
+18 283
+17 758
+15 992
+14 668
+
+%
+1.890
+0.161
+0.153
+0.152
+0.147
+0.142
+0.129
+0.125
+0.113
+0.103
+3.115
+
+/32
+
+196.21.218.x
+196.20.17.x
+196.14.169.x
+196.20.13.x
+196.21.125.x
+196.21.218.x
+59.162.166.x
+196.32.152.x
+196.15.239.x
+196.34.217.x
+
+count
+258 615
+21 611
+21 576
+15 992
+8 848
+8 175
+6 549
+6 302
+5 958
+5 841
+
+%
+1.832
+0.153
+0.152
+0.113
+0.062
+0.057
+0.046
+0.044
+0.042
+0.041
+2.542
+
+NP ackets = 14 115 791
+
+TOP ORIGIN NETBLOCKS FOR 445/TCP BY SOURCE COUNT
+
+Table VI
+
+Rank
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+/8
+
+189.0.0.0
+92.0.0.0
+190.0.0.0
+95.0.0.0
+79.0.0.0
+78.0.0.0
+201.0.0.0
+89.0.0.0
+59.0.0.0
+87.0.0.0
+
+Sources
+209 921
+204 970
+191 752
+190 630
+151 942
+143 154
+113 530
+113 106
+111 005
+110 858
+Total
+
+%
+5.511
+5.381
+5.034
+5.004
+3.988
+3.758
+2.980
+2.969
+2.914
+2.910
+40.449
+
+/16
+
+78.106.0.0
+93.80.0.0
+93.81.0.0
+95.28.0.0
+89.178.0.0
+95.24.0.0
+190.51.0.0
+77.28.0.0
+59.93.0.0
+77.29.0.0
+
+Sources
+30 407
+29 643
+25 766
+25 703
+25 677
+23 763
+19 982
+17 173
+15 446
+14 024
+Total
+
+%
+0.798
+0.778
+0.676
+0.674
+0.674
+0.623
+0.524
+0.450
+0.405
+0.368
+5.970
+
+%
+46.397
+45.231
+39.315
+39.219
+39.179
+36.259
+30.490
+26.203
+23.568
+21.398
+
+/24
+
+196.1.232.0
+79.114.134.0
+79.114.135.0
+89.179.78.0
+89.179.104.0
+89.179.105.0
+89.179.106.0
+89.179.107.0
+93.81.128.0
+93.81.132.0
+
+Sources
+233
+229
+226
+224
+222
+215
+213
+211
+209
+209
+
+%
+91.015
+89.453
+88.281
+87.500
+86.718
+83.984
+83.203
+82.421
+81.640
+81.640
+
+NSourceIP = 3 809 104 N/8 = 194 N/16 = 14 896 N/24 = 495 602
+
+ACKNOWLEDGEMENTS
+
+This work was performed in and funded by the Telkom
+Centre of Excellence in Distributed Multimedia at Rhodes
+University. Funding was also received from the National
+Research Foundation Thutuka Program Grant number 69018
+and the Rhodes University Joint Research Committee (JRC).
+
+REFERENCES
+
+[1] F. Baker, W. Harrop, and G. Armitage, “IPv4 and IPv6 Greynets.” RFC
+
+6018 (Informational), Sept. 2010.
+
+[2] W. Harrop and G. Armitage, “Deﬁning and evaluating greynets (sparse
+darknets),” in LCN ’05: Proceedings of the The IEEE Conference on
+Local Computer Networks 30th Anniversary, (Washington, DC, USA),
+pp. 344–350, IEEE Computer Society, 2005.
+
+[3] Microsoft, “Virus alert about the Win32/Conﬁcker worm (KB962007).”
+Online, August 18 2008. Last Review: December 1, 2010 - Revision:
+10.0.
+
+[4] Microsoft, “Win32/conﬁcker.” Online, 8 Jan 2009. Updated: Nov 10,
+
+2010.
+
+[5] Microsoft, “MS08-067 : Vulnerability in Server Service Could Allow
+Remote Code Execution (KB958644),” tech. rep., Microsoft, Oct 23
+2008.
+
+[6] Microsoft, “MS03-026 : Buffer Overrun In RPC Interface Could Allow
+Code Execution (KB823980),” tech. rep., Microsoft, July 16 2003.
+Originally posted: July 16, 2003 Revised: September 10, 2003.
+
+[7] Microsoft, “MS03-039 : Buffer Overrun In RPCSS Service Could Allow
+Code Execution (KB824146),” tech. rep., Microsoft, September 10 2003.
+[8] Microsoft, “Virus alert about the Nachi worm (KB826234).” Online,
+
+August 18 2003.
+
+[9] Microsoft, “MS04-011: Security Update for Microsoft Windows
+(KB835732),” tech. rep., Microsoft, April 13 2004. Updated: August
+10, 2004.
+
+[10] Microsoft, “MS06-040 : Vulnerability in Server Service Could Allow
+Remote Code Execution (KB921883),” tech. rep., Microsoft, September
+12 2006.
+
+[11] P. Porras, H. Saidi, and V. Yegneswaran, “An analysis of conﬁcker’s
+logic and rendezvous points,” tech. rep., SRI International, 4 February
+2009. Last Update 19 March 2009.
+
+[12] B. Nahorney, “The downadup codex.” Online, March 2009.
+[13] D. Moore, C. Shannon, G. M. Voelker, and S. Savage, “Network
+
+telescopes,” tech. rep., CAIDA, 2004.
+
+[14] B. Irwin, A framework for the application of network telescope sensors
+in a global IP network. PhD thesis, Rhodes University, Grahamstown,
+South Africa, 2011.
+
+[15] B. Schneier, “The Zotob Storm,” IEEE Security and Privacy, vol. 3,
+
+pp. 96–, November 2005.
+
+[16] Microsoft, “Microsoft Security Bulletin MS02-039: Vulnerability in
+Plug and Play Could Allow Remote Code Execution and Elevation of
+Privilege (899588).” Online, August 9 2005.
+
+[17] D. White, “MS05-039 and the Zotob summary.” Online, 18 August 2005.
+
+Last accessed 2010-12-01.
+
+[18] E. Aben, “Conﬁcker/Conﬂicker/Downadup as seen from the UCSD
+Network Telescope.” Online, CAIDA Network Telescope Project -
+Backscatter, February 2009.
+
+[19] P. Hick, E. Aben, D. Andersen, and K. Claffy, “The CAIDA UCSD
+Network Telescope "Three Days Of Conﬁcker" (collection).” Online,
+CAIDA Network Telescope Project - Backscatter, 2009. Support for the
+UCSD Network Telescope "Three Days Of Conﬁcker" Dataset and the
+UCSD Network Telescope are provided by Cisco Systems, Limelight
+Networks,
+the National
+Science Foundation, and CAIDA Members.
+
+the US Department of Homeland Security,
+
+[20] M. Richard and M. Ligh, “Making fun of your malware.” Conference
+
+Presentation Defcon 17, Las Vegas USA, August 2009.
+
+[21] Carnivore.IT, “Conﬁcker does not like me?.” Online Blog, 3 November
+
+2009. Accessed 21 November 2010.
+
+[22] E. Wustrow, M. Karir, M. Bailey, F. Jahanian, and G. Huston, “Internet
+background radiation revisited,” in Proceedings of
+the 10th annual
+conference on Internet measurement, IMC ’10, (New York, NY, USA),
+pp. 62–74, ACM, 2010.
+
+

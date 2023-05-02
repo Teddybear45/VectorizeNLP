@@ -1,0 +1,920 @@
+A High-level Architecture  for Efficient Packet 
+
+Trace Analysis  on  GPU Co-processors
+
+Alastair Nottingham
+
+Security and Networks Research Group
+
+Department of Computer Science
+
+Rhodes University
+
+Grahamstown, South Africa
+
+Email: anottingham@gmail.com
+
+Barry Irwin
+
+Security and Networks Research Group
+
+Department of Computer Science
+
+Rhodes University
+
+Grahamstown, South Africa
+
+Email: b.irwin@ru.ac.za
+
+Abstract—This paper proposes a high-level architecture to
+support efﬁcient, massively parallel packet classiﬁcation, ﬁltering
+and analysis using commodity Graphics Processing Unit (GPU)
+hardware. The proposed architecture aims to provide a ﬂexible
+and efﬁcient parallel packet processing and analysis framework,
+supporting complex programmable ﬁltering, data mining op-
+erations, statistical analysis functions and trafﬁc visualisation,
+with minimal CPU overhead. In particular, this framework aims
+to provide a robust set of high-speed analysis functionality,
+in order to dramatically reduce the time required to process
+and analyse extremely large network traces. This architecture
+derives from initial research, which has shown GPU co-processors
+to be effective in accelerating packet classiﬁcation to up to
+tera-bit speeds with minimal CPU overhead, far exceeding the
+bandwidth capacity between standard long term storage and the
+GPU device. This paper provides a high-level overview of the
+proposed architecture and its primary components, motivated
+by the results of prior research in the ﬁeld.
+
+Index Terms—Data mining, Computer networks, Information
+
+security, GPGPU.
+
+I. INTRODUCTION
+
+Network packet traces (also referred to as captures) are
+repositories for large amounts of useful technical, forensic
+and statistical information, as they contain a record of all
+network activity intercepted over an arbitrary period of time
+at particular network interface. Traces collected over long
+intervals (spanning months or years) provide a historical record
+of trafﬁc dynamics, incidents and malicious activity [1]. In ad-
+dition, long term packet traces are used to store data collected
+at network telescopes in order to study Internet Background
+Radiation (IBR) [2], [3], such as the propagation and impact
+of large scale internet events and worm outbreaks [1]. Unfortu-
+nately large traces containing hundreds of millions or billions
+of packets are computationally expensive and extremely time
+consuming to process, which makes identifying interesting
+data tedious, and exploration extremely difﬁcult. To address
+this, prior research has investigated the use of Graphics Pro-
+cessing Unit (GPU) co-processors to accelerate classiﬁcation,
+in order to simplify and accelerate packet classiﬁcation. This
+research determined that modern commodity GPUs provide a
+wealth of a spare massively-parallel processing power which,
+if used appropriately, can be applied to dramatically improve
+ﬁltering performance [4].
+
+This paper presents an overview of a GPU based archi-
+tecture for accelerating and simplifying the analysis of large
+trace ﬁles, based largely on ﬁndings and insights gained from
+prior research. The primary focus of this overview are the
+four main components used in capture processing: the program
+compiler, which generates encoded ﬁltering instructions; the
+capture manager, which marshals data efﬁciently from long
+term storage; the GPU classiﬁcation virtual machine, which
+executes encoded ﬁlter programs and harvests packet data;
+and the capture visualiser, which provides high-level capture
+information to the user. As this paper focuses on high-
+level, abstract architecture, discussion relating to the technical
+implementation of components is limited. Signiﬁcant details
+relating to the actual implementation of many components may
+however be found in other component-speciﬁc publications,
+which are referenced in text when available.
+
+This paper is structured as follows. Section 2 introduces the
+domain of packet analysis, describes prior research, and details
+related work in the ﬁeld. Section 3 provides an overview of
+the larger GPU accelerated packet analysis framework, and
+brieﬂy describes its four primary components. These com-
+ponents include the capture manager, packet ﬁltering virtual
+machine, program compiler and trace visualiser. Section 4
+brieﬂy considers some wider applications of the framework,
+while Section 5 concludes with a summary.
+
+II. BACKGROUND
+
+In the context of computational networks, packets are struc-
+tured units of data which facilitate all remote communica-
+tion. A packet comprises a set of ordered, protocol-speciﬁc
+transmission directives (called protocol headers), followed by
+a segment of application-speciﬁc transmission data, which
+together facilitate communication between remote hosts. Each
+successive protocol header is contained within the payload
+section of the previous protocol header, with most packets
+comprising several protocol
+layers. Protocol headers vary
+considerably in terms of structure, complexity and variability.
+While some protocols, such as the User Datagram Protocol
+(UDP), contain only a few statically deﬁned and predictable
+ﬁeld locations, other protocols (such as TCP) include optional
+and variable length ﬁelds which require parsing and evaluating
+
+Figure 1. The structure of a PCAP packet trace.
+
+earlier ﬁelds in the protocol header to identify. The volume of
+data contained in a particular packet depends on its purpose,
+and may vary greatly from simple host name resolution
+requests to large chunks of multimedia data. As a result, packet
+lengths may vary signiﬁcantly, ranging from tens to thousands
+of bytes.
+
+A. Packet Traces
+
+Packet traces are static records of otherwise transient packet
+transmissions, typically captured at a speciﬁc live network
+interface over a set period of time. The most common open
+format is the pcap dumpﬁle format [5], which originated as
+part of the libpcap UN*X library. The pcap capture format
+stores packets in a linked list conﬁguration, which supports
+arbitrary packet sizes without the need padding, and allows
+for new packets to be appended to the ﬁle on the ﬂy, without
+needing to add or change existing records. The capture ﬁle
+structure [6], illustrated in Figure 1, begins with a 24 byte
+Global Header detailing information speciﬁc to the entire cap-
+ture, which is followed by a list of packet records, comprising
+a 16 byte Packet Header followed by the raw packet byte array.
+
+B. Prior Research
+
+The architecture presented in this paper extends and expands
+upon prior research into efﬁcient, massively-parallel packet
+header classiﬁcation on GPU hardware. This research resulted
+in a prototype general packet classiﬁcation engine called GPF,
+designed speciﬁcally for efﬁcient GPU-based execution. The
+prototype algorithm was comprised of two primary execution
+phases, partitioned into separate CUDA (Compute Uniﬁed
+Device Architecture) kernel functions [7]. Together these
+provided a memory efﬁcient method of processing multiple
+statically deﬁned packet header based predicates concurrently.
+A high-level overview of the architecture of GPF is provided
+in Figure 2.
+
+GPF ﬁlter programs are written in a simple high-level Do-
+main Speciﬁc Language (DSL) [8] for specifying ﬁlter pred-
+icates, which are compiled to two or three highly-optimised
+low-level integer based instruction arrays. The ﬁrst integer ar-
+ray encodes all the packet data comparison operations required
+to evaluate all ﬁlter predicates, while the remaining arrays
+encode predicate expressions. In the ﬁrst phase of execution,
+the ﬁrst integer array is used to sequentially evaluate all com-
+parisons to packet data for all speciﬁed ﬁlters, caching chunks
+of data locally to reduce global memory overhead and storing
+results in coalesced arrays in device global memory. During
+the second phase, these results are used in combination with
+
+Figure 2. Overview of the architecture of the GPF prototype classiﬁer.
+
+the remaining integer arrays to evaluate all ﬁlter predicates and
+sub-predicates, generating individual arrays of boolean results
+for every speciﬁed ﬁlter. The primary beneﬁt of this approach
+is that it avoids thread divergence by supplying all threads
+with the same set of instructions, thereby minimising thread
+divergence while simultaneously providing native multi-match
+ﬁltering support.
+
+This classiﬁcation approach, supported by a range of support
+processes and data structures, ultimately produced promising
+results which signiﬁcantly improved upon processing times
+of comparative CPU classiﬁers. This research is discussed
+in detail in [4], and includes a complete description of the
+construction of the classiﬁcation algorithm and its associated
+DSLs. Subsequent research focused on the construction of
+CaptureFoundry, a capture analysis, manipulation and ﬁltering
+tool which utilised an enhanced high register pressure [9]
+version of the classiﬁcation kernels, an OpenTK based visual-
+isation component, and highly optimised threaded supporting
+architecture to simplify and accelerate the processing of large
+packet trace ﬁles. This research is described in [10].
+
+C. Related Research
+
+The domains of packet classiﬁcation and GPGPU (General
+Processing on GPUs) are both active research areas, and en-
+compass a broad range of diverse research. Literature relating
+to GPU accelerated packet classiﬁcation is relatively scarce
+however, seemingly due, in part, to a perceived high level
+of incompatibility between traditional packet classiﬁcation
+algorithms and GPU hardware design, and and strong trend
+towards fast IP classiﬁcation algorithms [11], [12], [13]over
+more ﬂexible protocol-independent classiﬁcation [4], [14],
+[15]. The most closely related signiﬁcant publication describes
+Gnort, a GPU implementation of the Snort intrusion detection
+algorithm [16], was the ﬁrst GPU accelerated application to
+accelerate packet analysis operations. Gnort used a fast parallel
+string matching algorithm to process packet payloads and
+identify threats using the Snort rule set. Gnort did not provide
+any GPU accelerated packet classiﬁcation functions, however,
+and relied on PCAPs signiﬁcantly slower CPU classiﬁcation
+algorithm to perform pre-ﬁltering, ultimately bottlenecking its
+performance.
+
+Figure 3.
+analysing various traces on HDD and SSD mediums.
+
+Comparative performance of Wireshark and CaptureFoundry
+
+Figure 4.
+classifying 107 packets against several IP-based ﬁlters on various GPUs.
+
+Total number of milliseconds spent buffering, transferring and
+
+III. ARCHITECTURE OVERVIEW
+
+This
+
+section introduces and motivates
+
+the proposed
+GPU based packet processing architecture, and provides an
+overview of its primary system components and how they re-
+late to each other, in order to supply context for the remaining
+sections which focus on these components individually. This
+architecture is intended to facilitate rapid detailed analysis
+and exploration of extremely large packet trace ﬁles spanning
+hundreds of gigabytes, terabytes, or more, while consuming
+as few host resources as possible.
+
+A. Architecture Motivation
+
+The architecture described in this section was heavily in-
+ﬂuenced by the results of the prototype described in Section
+II-B which illuminated numerous potential opportunities for
+improvement and optimisation, and highlighted several areas
+of concern. Many of these observations may be seen in the
+performance results of the application, particularly when these
+results are compared with that of Wireshark, which uses
+pcap for packet classiﬁcation, across different hard drives.
+To this end, Figure 3 shows the comparative performance of
+CaptureFoundry, utilising the prototype ﬁltering architecture,
+and Wireshark when reading traces from both a Hard Disk
+Drive (HDD) and a Solid State Drive (SSD) over a SATA3
+interface. In addition, Figure 4 shows the length of time spent
+by the prototype algorithm buffering, transferring and ﬁltering
+packet capture data.
+
+The performance results in Figure 3 show that while the
+while Wireshark maintains roughly equivalent performance
+across both HDDs and SSDs, CaptureFoundry’s performance
+scaled proportionately with respect to the speed of the storage
+medium utilised. This implies that while Wireshark’s classi-
+ﬁcation performance is processor-bound, the performance of
+the prototype is bandwidth bound. When considered in com-
+bination with Figure 4, which shows that prototype ﬁltering
+engine is capable of processing packet data almost two orders
+of magnitude faster than the trace reading process is capable
+of providing it. Additionally, it shows that the transfer process
+between the host and the GPU is signiﬁcantly faster than the
+classiﬁcation process.
+
+With respect to the GPU classiﬁcation process this is a
+highly promising result, as it indicates that the GPU is being
+under-utilised and left in an idle state for the majority of
+execution time. As buffering and classiﬁcation are performed
+concurrently, the idle time of the GPU classiﬁcation process
+can be used to perform more complex analysis of packet data
+by increasing the complexity of the classiﬁcation algorithm
+without sacriﬁcing overall performance. This is of particular
+signiﬁcance, as the prototype classiﬁcation engine is limited in
+a number of ways. For instance, it is not capable of adjusting
+classiﬁcation execution based on data contained within a
+packet, which makes processing optional or variable length
+ﬁelds accurately and efﬁciently untenable. Furthermore, packet
+data cannot be collected, processed, or output to the user,
+which limits the potential versatility of classiﬁcation engine.
+Unfortunately, Figure 4 also indicates a signiﬁcant trace pro-
+cessing performance bottleneck, as classiﬁcation performance
+is bound by how fast packet data can be read from long term
+storage. Given that the relative processing speed of GPU co-
+processors is improving at a signiﬁcantly faster rate than that
+of long-term storage medium read speeds, and the limited
+capacity of fast SSD media preventing their use for terabyte
+sized captures, it is important to ﬁnd a way mitigate this
+bottleneck in some way.
+
+The other signiﬁcant areas of concern with respect to the
+prototype are the difﬁculty inherent in programming useful
+ﬁlters using the prototypes simple Domain Speciﬁc Language,
+which requires signiﬁcant knowledge of header protocols to
+use effectively, and the lack of a means to impart the results
+of ﬁltering to the user in a meaningful and understandable
+way. In order to improve the power, ﬂexibility and speed of
+the GPU classiﬁcation system, these observations were used to
+reﬁne and expand on the prototype architecture. The resultant
+architectural design is provided in the following section.
+
+B. GPU Platform
+
+The Nvidia CUDA platform is used to support the GPU
+processing functions used in this architecture. The motivation
+for this is relatively simple; the development of the prototype
+classiﬁer, from which this architecture is primarily derived,
+
+inputs include packet traces (see section II-A), protocol library
+ﬁles and high-level ﬁlter code.
+
+During the course of packet processing, the architecture
+produces additional ﬁles which are themselves inputs to the
+system. These include index ﬁles, result ﬁles and distilled
+traces. Packet index ﬁles are per-packet arrays which are used
+to navigate a capture quickly, without requiring repeated re-
+parsing. There are two distinct types of index ﬁle, which
+are produced concurrently the ﬁrst time a packet capture is
+processed. The ﬁrst is an absolute packet offset index, which
+is simply an array of the 64-bit byte offsets of each packet in
+the capture. The second index ﬁle type references the absolute
+packet offset index ﬁle, and contains a per-second array of
+packet indexes which correspond with the number of packets
+that have arrived at each second in the capture. These ﬁles
+are used to quickly navigate and visualise captures, and allow
+for the rapid derivation of several useful metrics, including
+the efﬁcient calculation of packet rate, data rate and average
+packet size over any arbitrary interval, without the need for
+re-parsing capture ﬁles or storing large volumes of data in host
+memory.
+
+When packets are processed,
+
+they concurrently produce
+individual ﬁlter results ﬁles for each ﬁlter speciﬁed. Each ﬁlter
+result ﬁle is an array of bits, where each bit corresponds to
+the truth value of that ﬁlter for a single packet. These result
+ﬁles are extremely small, highly compressible and reusable. In
+addition, they an be combined with ease through simple bit-
+wise boolean operations. Packet results ﬁles are used as masks
+for the visualisation component, and may additionally be used
+to distill simpliﬁed or reduced traces. Distilled captures are
+smaller, focused captures produced by parsing a capture, and
+using both ﬁlter results and/or a temporal window to remove
+packets which are of no interest. These reduced captures may
+then be processed in other protocol analysers which do not
+cope efﬁciently with large captures.
+
+A detailed consideration of these components may be found
+
+in [10].
+
+E. Filtering Language
+
+The GPU classiﬁcation virtual machine executes ﬁlter
+programs written in a high-level DSL, implemented using
+ANTLR v3 (ANother Tool for Language Recognition) [8]
+and C#. The DSL processes the speciﬁed ﬁlter program,
+performs a number of optimisations, and emits the resultant
+compiled ﬁlter as an array of commands encoded as integers
+for execution on the GPU VM (Virtual Machine). The DSL
+uses a syntax heavily inspired by C style languages, but
+uses different keywords speciﬁc to packet processing, and is
+intended to be ﬂexible, powerful, and easy to read, modify and
+write.
+
+To simplify the process of creating ﬁlter programs, the
+DSL supports the creation of protocols and protocol suites,
+analogous to classes and namespaces in C++ respectively,
+which encode high-level protocol libraries that describe the
+structure of collections of protocols and their header ﬁelds.
+They are intended to simplify the process of creating new
+
+Figure 5. Primary architecture components
+
+began when OpenCL was in its infancy, and suffered from
+limited functionality and hardware support. The CUDA frame-
+work, in contrast, was well into its second major iteration;
+it was more robust and functionally diverse, and provided
+greater programmer support. While the project was initially
+intended to target the OpenCL framework in order to beneﬁt
+from its portability, the greater maturity, ﬂexibility, availability
+and accessibility of CUDA at that time made it the most
+appropriate choice. Due to the similarities between OpenCL
+and CUDA kernel programs, however, translation between
+these languages is relatively uncomplicated, and porting the
+architecture is not a particularly complicated endeavor once
+development is complete.
+
+C. Architecture Components
+
+The revised classiﬁcation architecture consists of several
+general components, each of which has been adapted to
+address different elements described in the previous section. A
+simple diagram showing the relationship between components,
+as well as input and output ﬁles, is provided in Figure 5.
+
+Processing is divided between three layers, each operating
+on distinct platforms. The ﬁrst layer provides a user interface,
+and was developed using C#. The major elements of this layer
+include the capture visualiser, which provides functions for
+exploring captures at a high level through temporal visualisa-
+tion, and the program compiler, which converts high-level ﬁlter
+code into optimised ﬁlter programs. These components serve
+to provide useful and illustrative outputs and simplify program
+creation respectively. The second layer, written in C++, is
+either invoked through the C# interface or via the command
+line, and contains data structures and methods optimised
+for managing Input/Output (I/O) operations, packet buffering
+and pre-processing, and ﬁlter execution management. This
+layer contains the Capture Management component, which is
+designed to reduce capture buffering time and generate packet
+index ﬁles. Capture classiﬁcation and packet processing is
+facilitated within the third layer by a virtual machine written
+in CUDA, which extends upon and signiﬁcantly improves the
+versatility and ﬂexibility of the prototype classiﬁcation engine.
+
+D. Indexes, Results and Distilled Traces
+
+The packet capture processing architecture presented de-
+pends on an assortment of ﬁles to work efﬁciently. The primary
+
+ﬁlters by providing named ﬁelds and ﬁlter functions which
+may be referenced and reused. Protocol libraries operate using
+a high-level syntax intended to allow ﬂexible and extensible
+processing of arbitrary protocol headers. These libraries are
+used to generate optimised ﬁlter code, by allowing the ﬁlter
+compiler to determine at compile time which ﬁelds need to
+be evaluated, and which operations need to be performed, in
+order to generate the results requested by the ﬁlter program.
+Protocols are evaluated in a chain (similarly to the
+PathFinder packet classiﬁer [17]), and each protocol may spec-
+ify which protocol is next in the chain based on the contents of
+a protocol header ﬁeld or register value. These links between
+protocols are used to identify all possible paths between the
+physical layer protocol indicated in the global header of the
+packet trace, and any speciﬁed high-level protocol. Thus, a
+program may simply query “TCP.SourcePort == 445”, and
+the compiler will determine all protocols that could potentially
+precede TCP, and generate ﬁlters to detect and navigate them.
+This greatly simpliﬁes the speciﬁcation of ﬁlters for protocols
+at higher levels in the protocol stack, and will hopefully help
+to reduce user error.
+
+Protocols may contain any number of ﬁelds or ﬁlters,
+which deﬁne the header structure and predeﬁned ﬁlter methods
+respectively. Fields describe the physical layout of protocols
+in the packet data in terms of bitwise offsets and lengths,
+and support optional and variable length ﬁeld types through
+DSL operations which use the syntax of if statements and
+while loops respectively. Filters, in contrast, deﬁne a general
+process, and are thus similar to methods in C based languages.
+Filters can return boolean results or numeric values, either
+as one or more arrays when invoked from the host, or as
+single value when invoked from within a protocol executing
+on the GPU VM. Filters can be used to deﬁne reusable ﬁlter
+predicates, or to gather and transform packet header data for
+use in visualisation or statistical analysis.
+
+In addition, protocols may maintain a limited collection of
+runtime variables (depending on the GPU being used), which
+may be used to store and transform packet data for use in
+calculations and when returning ﬁlter results. The allocation
+and de-allocation of registers is automatically handled by
+the compiler, which maintains a set of 30 or more numeric
+registers and 64 boolean registers for each packet. Protocols
+may also access and manipulate a selection of system registers
+through special functions. Protocols provide a wealth of other
+functionality and concepts,
+inheritance,
+ﬁeld value deﬁnitions and a range of mechanisms for con-
+trolling the execution of the GPU VM from within protocol
+code. Unfortunately, due to the complexity and scope of the
+language and the space limitations of this paper, a detailed
+discussion is not possible here, and will be deferred to a future
+publication.
+
+including protocol
+
+The main process in a ﬁlter program is the ﬁlter kernel,
+which performs a similar function to that of a main method
+in C++. Filter kernels specify which ﬁlters should be invoked,
+which in tern determines which protocols need to be eval-
+uated. Results can be retrieved and stored as a results ﬁle
+
+from within this method. The compilation of a ﬁlter kernel
+involves parsing and interpreting the structures deﬁned in the
+protocols it references so that these structures may be used
+to construct minimalistic and efﬁcient parallel GPU ﬁlters.
+Processing involves parsing all expressions and variable based
+operations ﬁrst, and then parsing the ﬁeld, protocol and suite
+structure into optimised collections in memory. These ordered
+collections can then be analysed, manipulated and pruned to
+emit optimised ﬁlter code. Memory reads are optimised so that
+packet data is loaded as few times as possible by overlapping
+as many comparison operations and variable loads onto a
+single data cache read as register space allows.
+
+Once this process completes, the compiled ﬁlter kernel is
+ready to be passed to the classiﬁcation host process to begin
+preparation for evaluation.
+
+F. Capture Management
+
+The capture management components of the architecture
+are host side components which execute concurrently across
+several threads, and provide the context and inputs necessary to
+perform all ﬁltering, indexing and distillation operations. The
+capture management component is the primary I/O component,
+and is responsible for reading and writing capture, index and
+ﬁlter result ﬁles. It was developed using the C++ standard
+library and the Tiny-thread API (Application Programming
+Interface).
+
+Due to the bandwidth bottleneck between long term storage
+and host memory identiﬁed in Section III-A,
+the capture
+management component’s performance heavily impacts the
+applications overall performance. Care has thus been taken to
+optimise the performance of this component as much as possi-
+ble. Each ﬁle accessed by the capture management component
+is read and buffered by a dedicated light-weight thread in
+512KB chunks, before being processed by the primary buffer
+management thread. This raw data is then cycled through in
+order to concurrently generate packet index ﬁles and pass
+chunks of packet data to the GPU virtual machine, or to the
+distillation mechanism. Indexing and distillation is covered in
+more detail in [10].
+
+In order to mitigate the bottleneck presented by the limited
+performance of individual drives,
+the capture management
+component supports a ﬁle mirroring mechanism which can
+be used to reduce execution time at
+the expense of disk
+space on independent drives. By specifying multiple identical
+copies of a speciﬁc trace ﬁle located on independent disks, the
+capture manager is able to coordinate and load balance partial
+capture reads from multiple drives concurrently, increasing
+the speed at which the capture can be buffered in host
+memory, in a similar manner to that of a Redundant Array of
+Independent Disk (RAID) conﬁguration. In order to maintain
+high capture read speeds across multiple drives, the average
+read performance of each drive is monitored over a small
+rolling window, and used to periodically adjust the read load
+on each drive based on its recent performance. The period
+between each adjustment is determined using an incremental
+back-off process. This method ensures that poorly performing
+
+disks do not inadvertently reduce rather than improve the
+capture parsing speed, without requiring the micromanagement
+of individual threads.
+
+The ﬁle mirroring feature provides the speed beneﬁts of a
+RAID array without the need to create or maintain one, at the
+expense of additional disk space.
+
+G. Filtering Virtual Machine
+
+The GPU classiﬁcation process is handled by a specialised
+parallel virtual machine which executes the ﬁlter kernel opera-
+tions stored in an integer array in GPU constant memory over
+segments of packet data collected by the capture manager.
+The architecture of this VM is derived from the prototype
+ﬁltering kernels, which used a multistage ﬁltering process,
+where packet data was processed in two to three course-
+grained parallel batches in rigid sequence. This course-grained
+approach was sufﬁcient for static predicates, which could be
+pre-compiled without access to packet data, but lacked the
+ﬂexibility needed for more complex and variable protocols
+where offsets cannot be predicted. The classiﬁcation VM uses
+a similar but signiﬁcantly more ﬂexible approach, relying on
+ﬁne grained commands (rather than course grained phases)
+that can occur in any sequence any number of times. This is
+made possible by the fact that, due to its specialised nature, the
+virtual machine does not require a wide variety of operations,
+and many simplifying assumptions can be made about how
+processing can proceed.
+
+On order to minimise redundant memory loads, the VM
+interleaves the processing of multiple protocols and evaluates
+them concurrently. The VM uses a 64 byte packet cache in
+register memory to hold small chunks of data, which can
+then be evaluated by multiple protocols simultaneously. Due
+to the limited register space available to individual threads
+on many GPUs,
+it may often not be possible to process
+all protocols concurrently without spilling registers into de-
+vice memory. If this happens to frequently used registers,
+the overall performance of the classiﬁcation process would
+be signiﬁcantly diminished by the high latency inherent in
+reads from device memory [18]. To minimise this, the per-
+thread register capacity of the graphics card and the register
+demands of each protocol are used to split processing into a
+multiple passes over the packet data (using a simple scheduling
+algorithm) during compilation. This ensures that the register
+demands of each batch of concurrent protocol evaluations
+never exceed the capacity of the execution thread, and thus do
+not incur signiﬁcant performance penalties due to high latency.
+One of the more considerable complications in processing
+more ﬂexible protocol speciﬁcations is managing thread di-
+vergence efﬁciently. In the prototype algorithm, divergence
+was eliminated entirely by processing every classiﬁcation
+predicated in every packet. Similarly, the approach taken in
+the VM favours eliminating as much divergence as possible
+by allowing for redundant processing, rather than trying to
+forcibly block threads from executing irrelevant classiﬁcations,
+in order to adhere as closely as possible to a SIMD processing
+model. While each thread attempts to processes all protocols,
+
+Figure 6. Abstract memory layout of the packet classiﬁcation virtual machine.
+
+they are aware of what the current protocol in the packet they
+are processing is, and use this to determine which operations
+should be stored, and which should be discarded. In addition,
+before a protocol is evaluated, each warp may optionally check
+to ensure that at least one packet in the warp is associated with
+that protocol using shared memory. If no packets identify with
+that protocol, that protocol is skipped over by the warp, and
+all results are set to zero for that protocol.
+
+Each thread maintains a bank of registers used to store
+system and user variables. Each thread maintains 64 1-bit
+boolean registers, contained in two 32-bit integer registers, and
+a variable number of 32-bit integer registers, depending on the
+GPU being utilised. Rather than attempt to allocate and de-
+allocate registers during execution, the compiler tracks register
+usage by protocol, and arranges these integers within an array.
+When a protocol moves out of scope and all its relevant data
+has been stored, its registers are considered free, and other
+protocols may use those offsets in the register array. Values
+which exceed 32-bits are stored across multiple registers.
+
+The virtual machine outputs individual per-packet arrays
+for each boolean and numeric result returned to the host.
+Classiﬁcation results are stored in highly compact and easily
+compressed single bit format, which may be used as index
+masks to extract, visualise and distill packets matching partic-
+ular ﬁlter results. By using a bit-based result format, multiple
+ﬁlters can be combined through simple bitwise AND and OR
+operations on the host, or by a GPU function. Figure 6 shows
+a high-level overview of the memory architecture of the virtual
+machine, and the ﬂow of data from memory banks to and from
+the main processing loop.
+H. Visualisation
+
+The user interface provides a uniﬁed set of tools for explor-
+ing and analysing large long-term trace ﬁles, primarily through
+controls and data structures which facilitate fast visualisation
+of the underlying packet data. Visualisation depends heavily on
+index ﬁles and ﬁlter results generated during packet processing
+in order to allow for real time exploration of large captures
+without exhausting host memory. The interface is implemented
+in C# to facilitate rapid prototyping and development, with
+visualisations constructed in OpenGL through the OpenTK C#
+wrapper.
+
+One of the primary problems associated with constructing
+the visualisation and interaction components of the user inter-
+
+face is the limited access to the underlying packet trace data,
+which is composed of millions, if not billions, of arbitrarily
+sized packets whose offsets must be determined by parsing
+all prior packets sequentially in the trace. As the interface
+is intended to visualise packet sets that could potentially span
+terabytes, it is not feasible to store packet data in host memory
+for analysis due to space constraints. Similarly, repeatedly
+re-parsing multi-gigabyte capture ﬁles for each operation
+performed in the interface is infeasible as it is far too time
+consuming. Through the use of the index ﬁles generated by
+the capture manager during capture parsing, and using a tree-
+like data structure which incrementally caches packet metrics
+over suitably sized intervals in the capture, the visualisation
+component
+is capable of generating detailed overviews of
+trafﬁc data over any time interval in near-real time, without
+consuming signiﬁcant memory resources.
+
+The capture visualisation component displays an overview
+of the capture by using the per-packet and time-stamp in-
+dex ﬁles to calculate the number of packets and amount of
+data over various time intervals, which maybe expanded and
+contracted in real
+time. Graph rendering is performed by
+shader programs which execute on the GPU, and the resultant
+images may be stored in the Portable Network Graphics (PNG)
+format. Figure 7 shows two images generated by the visualiser,
+showing both a capture wide (7a) and month-long segment
+(7b) of visualised trafﬁc volumes. In these images, the black
+line indicates the number of packets arriving at that time,
+while the gray area shows the volume of packet data arriving
+at that time. As the amount of packet data arriving at any
+given time will always signiﬁcantly outweighs the number of
+packets arriving, these graphs have been rescaled to similar
+sizes. The visualiser supports multiple overlays on the same
+graph, of various different types, in customisable render orders
+and colours. In addition, the visualiser is capable of overlaying
+the results of ﬁlters on capture overviews. The visualiser is
+designed to support additional graph layouts, although these
+have not been ﬁnalised at this time.
+
+IV. ARCHITECTURE APPLICATIONS
+
+The high-level architecture presented in this paper is pri-
+marily intended to support and accelerate packet trace analysis,
+and thus discussion has focused on this application exclusively.
+In many respects, the GPU-based packet processor previously
+discussed is ideally suited to ofﬂine trace-processing tasks,
+as it is in essence a batch-processing approach. It allows
+for packets to be buffered and processed collectively to best
+exploit the SIMD nature of GPU co-processors, and depends
+heavily on this collective processing to maintain its classiﬁca-
+tion throughput. This does not however preclude its application
+in online classiﬁcation processes.
+
+The most signiﬁcant complication in applying this classi-
+ﬁcation and processing framework to live network trafﬁc is
+maintaining high throughput while simultaneously minimising
+the latency between when a packet arrives and when it is
+processed. This approach may not be viable in applications
+where minimal latency is paramount, as it is difﬁcult to avoid
+
+deferring packets processing entirely. In applications which
+can afford some latency, however, high-volume near-real-time
+classiﬁcation is possible by reducing the size of packet buffers
+and forcing buffer processing if they are unﬁlled after a set
+interval. When network volume is high, buffers will ﬁll quickly
+and may be processed rapidly, mitigating latency issues. When
+network volume is low, packets are still guaranteed to arrive
+and be processed by the device at the end of each set interval,
+and maximum latency can be reduced by reducing this interval.
+With support for live captures and relatively low latency
+packet processing,
+the framework is applicable to a wide
+range of problems, including intrusion detection systems and
+network monitoring applications. As GPUs are relatively low
+cost commodity hardware items which run in parallel with a
+CPU, it is also potentially possible to create and deploy an
+agent based distributed classiﬁcation and monitoring sensor
+network, using available GPGPU capable hosts. The architec-
+ture, while packet centric, may in addition be expanded into
+a more general records processing framework, to be used in
+processing large log ﬁles and similar record sets.
+
+V. SUMMARY
+
+the program compiler,
+
+This paper has described an architecture which accelerates
+the classiﬁcation, processing and exploration of large packet
+traces, extending prior research into GPU accelerated packet
+classiﬁcation. The described architecture uses four primary
+components:
+the capture manager,
+the GPU classiﬁcation virtual machine and the visualiser.
+The program compiler is used to generate optimised vir-
+tual machine instructions using a high level domain-speciﬁc
+language to specify protocol structure and ﬁlter operations.
+The purpose of this component is to simplify the creation
+of classiﬁcation and analysis programs. The capture manager
+collects and buffers packet data and generates index ﬁles to
+accelerate visualisation and capture navigation. The capture
+manager also implements a ﬁeld mirroring function, which
+allows multiple copies of capture across distinct drives to be
+used to signiﬁcantly accelerate the capture reading process.
+The ﬁltering virtual machine is used to process the captures
+buffered by the capture manager using the virtual machine
+instructions generated by the compiler. The virtual machine
+can gather data, perform comparisons, execute functions and
+process optional and variable length ﬁelds, returning results as
+optimised per-packet data arrays. The visualiser uses the index
+ﬁles generated by the capture buffer and the results generated
+by the classiﬁcation virtual machine to visualise the capture,
+and thereby aid in the exploration of complex long term traces.
+low-
+overhead solution for exploring, analysing and extracting data
+from extremely large trace ﬁles. Future work is expected to
+focus on reﬁning the process, and expanding analysis to a
+distributed network of agents which can monitor trafﬁc, issue
+alerts, and provide remote visualisation and ﬁltering of recent
+trafﬁc.
+
+these components provide an efﬁcient
+
+Together
+
+(a) 21st October 2010 to 9th May 2011 with 1 day intervals.
+
+Figure 7. Visualisation showing comparative packet count (black line) and data volume (gray area) over time, at different levels of scale, for a large (43GB)
+packet trace.
+
+(b) 1st December 2010 to 31st December 2010 with 1 hour intervals.
+
+in algorithms and architectures. New York, NY, USA: ACM, 2009,
+pp. 188–196.
+
+[12] W. Jiang and V. K. Prasanna, “Large-scale wire-speed packet clas-
+siﬁcation on fpgas,” in FPGA ’09: Proceeding of the ACM/SIGDA
+international symposium on Field programmable gate arrays. New
+York, NY, USA: ACM, 2009, pp. 219–228.
+
+[13] D. E. Taylor, “Survey and taxonomy of packet classiﬁcation techniques,”
+
+ACM Comput. Surv., vol. 37, no. 3, pp. 238–275, 2005.
+
+[14] A. Begel, S. McCanne, and S. L. Graham, “Bpf+: Exploiting global data-
+ﬂow optimization in a generalized packet ﬁlter architecture,” SIGCOMM
+Comput. Commun. Rev., vol. 29, no. 4, pp. 123–134, 1999.
+
+[15] S. McCanne and V. Jacobson, “The bsd packet ﬁlter: a new architec-
+ture for user-level packet capture,” in USENIX’93: Proceedings of the
+USENIX Winter 1993 Conference Proceedings on USENIX Winter 1993
+Conference Proceedings. Berkeley, CA, USA: USENIX Association,
+1993, pp. 2–2.
+
+[16] G. Vasiliadis, S. Antonatos, M. Polychronakis, E. P. Markatos, and
+S. Ioannidis, “Gnort: High performance network intrusion detection
+using graphics processors,” in RAID ’08: Proceedings of
+the 11th
+international symposium on Recent Advances in Intrusion Detection.
+Berlin, Heidelberg: Springer-Verlag, 2008, pp. 116–134.
+
+[17] M. Bailey, B. Gopal, L. L. Peterson, and P. Sarkar, “Pathﬁnder:
+A pattern-based packet classiﬁer,” in Proceedings of
+the First
+Symposium on Operating Systems Design and Implementation,
+ser. OSDI ’94, Monterey, California, November 1994, pp. 115–123,
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.46.1294&rep=
+rep1&type=pdf.
+
+[18] Nvidia Corporation,
+
+3.1,” Online, NVIDIA Corporation, May
+
+“Nvidia CUDA C Best Practices Guide,
+Version
+last
+accessed: 09/05/2010. [Online]. Available: http://developer.download.
+nvidia.com/compute/cuda/3_1/toolkit/docs/NVIDIA_CUDA_C_
+BestPracticesGuide_3.1.pdf
+
+2010,
+
+REFERENCES
+
+[1] B. V. W. Irwin, “A framework for the application of network telescope
+sensors in a global ip network,” Ph.D. dissertation, Rhodes University,
+Grahamstown, South Africa, January 2011.
+
+[2] R. Pang, V. Yegneswaran, P. Barford, V. Paxson, and L. Peterson,
+“Characteristics of internet background radiation,” in Proceedings of
+the 4th ACM SIGCOMM conference on Internet measurement, ser. IMC
+’04. New York, NY, USA: ACM, 2004, pp. 27–40. [Online]. Available:
+http://doi.acm.org/10.1145/1028788.1028794
+
+[3] E. Wustrow, M. Karir, M. Bailey, F. Jahanian, and G. Huston, “Internet
+background radiation revisited,” in Proceedings of
+the 10th annual
+conference on Internet measurement, ser. IMC ’10. New York, NY,
+USA: ACM, 2010, pp. 62–74. [Online]. Available: http://doi.acm.org/
+10.1145/1879141.1879149
+
+[4] A. Nottingham, “Gpf: A framework for general packet classiﬁcation
+on gpu co-processors,” Ph.D. dissertation, Rhodes University, Graham-
+stown, South Africa, February 2012.
+
+[5] “Winpcap documentation,” Online, WinPcap, last accessed: 17/06/2011.
+[Online]. Available: http://www.winpcap.org/docs/docs_412/html/main.
+html
+
+[6] G. C. Ulf Lamping, Guy Harris, “Libpcap ﬁle format,” Online,
+July 2005. [Online]. Available: http://wiki.wireshark.org/Development/
+LibpcapFileFormat
+
+[7] Nvidia Corporation,
+
+3.1,” Online, NVIDIA Corporation, May
+
+“Nvidia CUDA C Programming Guide,
+Version
+last
+accessed: 09/05/2010. [Online]. Available: http://developer.download.
+nvidia.com/compute/cuda/3_1/toolkit/docs/NVIDIA_CUDA_C_
+ProgrammingGuide_3.1.pdf
+
+2010,
+
+[8] T. Parr, The Deﬁnitive ANTLR Reference: Building Domain-Speciﬁc
+
+Languages, p3.0 ed. The Pragmatic Programmers, 2008.
+
+[9] V. Volkov, “Better performance at lower occupancy,” Online, September
+last accessed: 30/05/2012. [Online]. Available: http://www.cs.
+
+2010,
+berkeley.edu/~volkov/volkov10-GTC.pdf
+
+[10] A. Nottingham, J. Richter, and B. Irwin, “Capturefoundry: a gpu accel-
+erated packet capture analysis tool,” in Proceedings of the South African
+Institute for Computer Scientists and Information Technologists Confer-
+ence, ser. SAICSIT ’12. New York, NY, USA: ACM, 2012, pp. 343–
+352. [Online]. Available: http://doi.acm.org/10.1145/2389836.2389877
+[11] W. Jiang and V. K. Prasanna, “Field-split parallel architecture for high
+performance multi-match packet classiﬁcation using fpgas,” in SPAA
+’09: Proceedings of the twenty-ﬁrst annual symposium on Parallelism
+
+

@@ -1,0 +1,1361 @@
+Visualization Of A Data Leak 
+
+How Can Visualization Assist To Determine The Scope Of An Attack? 
+
+I.P. Swart 
+
+Council for Scientific and Industrial 
+
+Research,  
+
+University of Rhodes 
+
+Council for Scientific and Industrial 
+
+Research,  
+
+University of Johannesburg 
+
+Prof M.M. Grobler 
+
+Prof. B. Irwin 
+
+University of Rhodes 
+
+ 
+ 
+ 
+ 
+
+Abstract—The potential impact that data leakage can have on a 
+country, both on a national level as well as on an individual level, 
+can  be  wide  reaching  and  potentially  catastrophic.  In  January 
+2013,  several  South  African  companies  became  the  target  of  a 
+hack attack, resulting in the breach of security measures and the 
+leaking of a claimed 700000 records.  The affected companies are 
+spread across a number of domains, thus making the leak a very 
+wide impact area.  The aim of this paper is to analyze the data 
+released  from  the  South  African  breach  and  to  visualize  the 
+extent  of  the  loss  by  the  companies  affected.  The  value  of  this 
+work lies in its connection to and interpretation of related South 
+African  legislation.  The  data  extracted  during  the  analysis  is 
+primarily personally identifiable information, such as defined by 
+the  Electronic  Communications  and  Transactions  Act  of  2002 
+and the Protection of Personal Information Bill of 2009. 
+
+Keywords-component;  data 
+security 
+
+leakage;  Internet;  privacy 
+
+laws; 
+
+I. 
+
+ INTRODUCTION  
+
+The  recent  breach  of  South  African  companies’  security 
+measures  has  released  a  trove  of  South  African  personal 
+information  to  the  Internet.  Although  small  by  international 
+standards  when  compared  with  breaches  such  as  the  incident 
+that  saw  Sony  lose  an  estimated  77  million  records  [1],  the 
+South  African  incident  saw  as  much  as  700000  records 
+exposed [2]. The number seems large but does little to describe 
+the  real  value  of  the  data  lost:  the  dumped  data  ranges  from 
+government,  banking,  mining,  petroleum,  transport  services, 
+management,  networking,  construction,  education  and  other 
+enterprises, making this leak a very wide impact area [2]. 
+
+The aim of this paper is to analyze the data released from 
+the breach and visualize what has been lost by the companies 
+affected.  The value  of  this work  lies  in  its  connection  to  and 
+interpretation  of  related  South  African  legislation.  The  data 
+extracted  during 
+is  primarily  personally 
+identifiable  information,  such  as  defined  by  the  Electronic 
+Communications and Transactions (ECT) Act of 2002 and the 
+Protection of Personal Information (POPI) Bill of 2009. 
+
+the  analysis 
+
+The paper will look at the impact areas of visualizing data 
+and  what  can  be  considered  as  personally 
+identifiable 
+information according to South African regulations.  It further 
+provides  an  overview  and  brief  analysis  of  the  publicly 
+available data obtained as a result of the data leak.  The paper 
+concludes with a discussion on why it is deemed important to 
+protect  private  information,  and  how  this  data  leak  serves  as 
+
+warning  to  South  African  organizations  that  better  security 
+controls are required. 
+
+II.  THE IMPACT OF VISUALIZING DATA 
+
+Assessing  the  impact  of  visualizing  data  leakage  is  fairly 
+difficult to determine.  Based on the literature reviewed by the 
+authors, three possible impact areas can be  identified.  These 
+are listed below and discussed thereafter. 
+
+  Human emotions. 
+  Complex datasets. 
+  Processing of unstructured data sources. 
+The effect of human emotions is demonstrated in a recent 
+case in America. Reporters from the Journal News newspaper 
+took  publicly  available  text-based  information  of  all  gun-
+owners  in  the  New  York  area  and  plotted  it  to  an  interactive 
+Google map to visually display the data.  Although the data has 
+been available for years, the act of visualizing the data sparked 
+intense  uproar  with  the  newspaper  receiving  almost  2000 
+letters  of  protest  and  experiencing  retaliation  against  their 
+reporters [3]. 
+
+Researchers  are  well  aware  that  humans  have  difficulty 
+grasping  complex  datasets  without  prior  exposure.    As  such, 
+there  are  several  studies  already  underway  to  improve  the 
+visualization field [4]. This trend is completely understandable 
+when the work of Grady [5] is taken into account. Her research 
+concluded  that  the  human  brain  dedicates  almost  30%  of  its 
+capacity  to  sight  with  the  closest  other  sense,  the  sense  of 
+touch, only utilizing 8% of the brain’s capacity. In her findings, 
+Grady  explains  that  humans  are  exceptionally  gifted  at 
+evaluating  visual  input  and  making  decisions  based  on  what 
+they see. Work conducted by Bertini and Lalanne [6] supports 
+this  theory  with  their  results  when  they  investigated  the 
+complementary  role  of  data  analysis  and  visualization 
+techniques and found that human operators in data rich areas 
+achieved  a  higher  degree  of  understanding  regarding  their 
+environment  with 
+the  help  of  computer  visualization 
+techniques.  
+
+Unfortunately as Marty [7] highlights, the biggest problem 
+with visualization is not the actual data display since there are 
+many  gifted  artists  available,  but  the  processing  of  the 
+unstructured  data  sources.  To  this  extent  researchers  such  as 
+Loukissas  and  Mindell  [8]  are  performing  research  on  the 
+viability of a visual language with syntax and semantics. 
+
+impact  people’s  understanding 
+
+As such, the impact of the data leak in South Africa, and 
+the  visual  representation  thereof,  is  in  particular  difficult  to 
+measure.  At the time of writing, the extent of the data leak was 
+not  yet  publicly  visualized,  thus  it  is  not  clear  how  human 
+emotions  may 
+thereof.  
+Therefore,  the  first  impact  area,  human  emotions,  is  not 
+applicable  in  this  specific  instance.    The  second  impact  area, 
+complex datasets, is satisfied, given that the data leak affected 
+at least 14 different companies in various sectors of business, 
+all with their own structure and semantic nuances; it can thus 
+be said that it created a data rich environment. Unfortunately 
+since the data is from various companies, the structure of the 
+data is completely different and presents a number of analysis 
+problems.    This  satisfied  the  third  impact  area,  processing  of 
+unstructured data sources.  The remainder of this paper looks 
+into the type of information that was leaked and the potential 
+impact that this leaked data have on various entities. 
+
+III.  PERSONALLY IDENTIFIABLE INFORMATION  
+
+According  to  South  African  legislation,  the  definition  of 
+
+personal information is extensive and includes the following: 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+to 
+
+to 
+
+the 
+
+relating 
+
+information  relating  to  an  identifiable,  living  natural 
+person and, where applicable, an identifiable, existing 
+juristic person; 
+information 
+race,  gender,  sex, 
+pregnancy,  marital  status,  national,  ethnic  or  social 
+origin, color, sexual orientation, religion, age, physical 
+or  mental  health,  well-being,  disability,  conscience, 
+belief, culture, language and birth of the person;  
+information  relating 
+the  education,  financial, 
+medical, criminal or employment history of the person; 
+any 
+identifying  number,  symbol,  email  address, 
+physical address, telephone number or other particular 
+assignment to the person; 
+the  blood  type  or  any  other  biometric  information  of 
+the person; 
+the  personal  opinions,  view  or  preferences  of  the 
+person; 
+correspondence sent by the person that is implicitly or 
+explicitly of a private or confidential nature; and 
+the  view  or  opinions  of  another  individual  about  the 
+person  and  the  name  of  the  person  if  it  appears  with 
+other personal information relating to the person or if 
+
+the  disclosure  of 
+information about the person [9][10]. 
+
+the  name 
+
+itself  would  reveal 
+
+In  essence,  any  piece  of  information  that  can  be  either 
+directly or indirectly linked to the identity of a specific person 
+can be regarded as personally identifiable information.  Due to 
+the sensitive nature of many of these pieces of information, the 
+first identified impact area of visualizing data, human emotions 
+(refer to Section II), plays an important part.  The next section 
+presents an overview of the personally identifiable information 
+that was leaked in this particular instance. 
+
+IV.  ANALYSIS OF THE DATA OBTAINED 
+
+Team GhostShell announced on 28 January 2013 that they 
+have obtained data leaked from South African companies. The 
+proclaimed  reason  for  the  data  leak  attack  was  to  retaliate 
+against corruption in the South African government and to send 
+a message that corruption will be uncovered [11]. Although the 
+text  was  worded  in  both  English  and  Afrikaans,  it  is  clearly 
+visible that Google Translate was used to translate the English 
+text  to  Afrikaans.  This  initially  gives  the  attack  a  local 
+perception but could simply be due to a smart attacker that did 
+his research regarding the country’s languages. 
+
+The  data  was  posted  on  various  paste  sites  such  as 
+http://textsnip.com  and  http://everfall.com  with  each  dataset 
+posted on more than one paste site to create redundancy in case 
+one paste site removed the data. As at 14 April 2013, all data 
+sources  were  still  available  for  all  companies  affected  by  the 
+breach.  Some  paste  sites  contained  a  modification  to  the 
+primary trunk of the data so that a less technical operator might 
+mistakenly think the data has been removed. It should be noted 
+that no verification of the data available was given by any of 
+the  companies  involved  and  as  such  should  not  be  trusted  as 
+100% accurate. The focus of the paper is only to analyze the 
+content of the purported breach, highlighting the difficulties in 
+assessing the data leaked. 
+
+According  to  the  analysis  performed  by  the  authors,  the 
+attack  itself  seems  to  have  been  conducted  via  Structured 
+Query  Language  (SQL)  injection  techniques.    The  authors 
+found artifacts of the software Acunetix (used to perform SQL 
+injections) in the data and the data format of more than one of 
+the datasets posted on the various paste sites.  Acunetix has a 
+freeware  version  of  the  software  available  to  the  public,  and 
+since  it  is  widely  used,  it  cannot  indiscriminately  lead  to  the 
+identity of the attackers. Table I presents a summary analysis of 
+the leaked data. 
+
+TABLE I.  
+
+SUMMARY ANALYSIS OF DATA AVAILABLE (OWN COMPILATION) 
+
+Company Attackers Claim 
+
+Information was Obtained From 
+African Reinsurance Corporation 
+
+Woolworths Holdings Limited 
+South African Diamond 
+Corporation 
+African Mining 
+
+BEE Network 
+
+Username/ 
+
+Password Available 
+
+Password 
+Hashed 
+
+Yes 
+
+Yes 
+
+No 
+Yes 
+
+Yes 
+
+Yes 
+
+No 
+
+N/A 
+Yes 
+
+Yes 
+
+Encryption 
+
+Type 
+
+MD5/Custom 
+
+N/A 
+
+N/A 
+N/A 
+
+MD5/Custom 
+
+Data 
+
+Removed 
+
+Type of Data Lost 
+
+No 
+
+No 
+
+No 
+No 
+
+No 
+
+Email, Username, Password 
+
+Email, Username, Password, ID, Address, 
+
+Marriage, Phone, Employment history 
+
+Email 
+
+Email, Title, Position, Username, Password 
+Email, Title, Username, Password, Address, 
+
+Financial 
+
+Company Attackers Claim 
+
+Information was Obtained From 
+Allied Technology International 
+I Llovo Boulevard (I llovo 
+Corporation) 
+
+Genesis Insurance Brokers 
+
+Omni ID Company Part 
+Ornico Marketing 
+Moolmans Africa Mining 
+Corporation 
+Angola's National Diamond 
+Corporation 
+Angola's Oil field industries 
+
+South African Express Petroleum 
+
+State University Part 
+Westcol College 
+
+The Inc Company 
+Sasol Corporation 
+Kenyan Business Directory 
+Algerian Government website 
+PressOffice linked to BidOrBuy, 
+South Africa's largest online store 
+
+FreightForwarders 
+
+PostNet Internet Services 
+
+Yes 
+
+Yes 
+
+Yes 
+
+Yes 
+Yes 
+
+Yes 
+
+No 
+No 
+
+Yes 
+
+Yes 
+Yes 
+
+Yes 
+Yes 
+No 
+Yes 
+
+No 
+
+Yes 
+
+Yes 
+
+Data 
+
+Removed 
+
+No 
+
+No 
+
+No 
+
+No 
+No 
+
+No 
+
+No 
+No 
+
+No 
+
+No 
+No 
+
+No 
+No 
+No 
+No 
+
+No 
+
+No 
+
+No 
+
+Type of Data Lost 
+
+Email, Username, Password 
+
+Email, Username, Password 
+
+Email, Username, Password, Phone, 
+
+Correspondence 
+
+Email, Username, Password, Phone, 
+
+Correspondence, Address 
+
+Email, Username, Password, Phone, Address 
+
+Email, Username, Password 
+
+Email 
+
+Database Structure 
+
+Email, Username, Password 
+
+Email, Username, Password, Phone, Address, 
+
+Correspondence 
+Email, Username 
+
+Email, Username, Password, Phones 
+
+Email, Username, Password 
+
+N/A 
+
+Username, Password 
+
+Names, Phones 
+
+Email, Username, Password, Phone, 
+
+Correspondence, Address 
+
+Email, Username, Password, Phone, 
+
+Correspondence, Address 
+
+Username/ 
+
+Password Available 
+
+Password 
+Hashed 
+
+Encryption 
+
+Type 
+
+MySQL/MD5 
+
+MySQL/MD5 
+
+Yes 
+
+Yes 
+
+Partial 
+
+MD5/MD4 
+
+No 
+No 
+
+N/A 
+N/A 
+
+Partial 
+
+Custom 
+
+N/A 
+N/A 
+
+Yes 
+
+Partial 
+Yes 
+
+Yes 
+Yes 
+N/A 
+Yes 
+
+N/A 
+
+No 
+
+Partial 
+
+(NedCare) 
+
+N/A 
+N/A 
+
+SHA-1/ 
+MySQL5 
+
+MD5/MD4/My
+SQL 160 bit 
+MD5/MD4 
+SHA-256/ 
+Haval-256 
+MD5/MD4 
+
+N/A 
+
+MD5/MD4 
+
+N/A 
+
+N/A 
+
+MD5 
+
+ 
+From the analysis performed and presented in Table I the 
+following personally identifiable information was extracted by 
+the authors: 
+
+5107 identifiable physical addresses. 
+18004 telephone numbers. 
+11703 unique username and password combinations. 
+19849 South African ID numbers. 
+1641 tertiary and secondary school education details. 
+45721 email addresses. 
+1632 marriage statuses. 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+One  of  the  surprise  findings of  the  data  analysis  was  that 
+although  the  breach  was  touted  as  a  South  African  breach,  it 
+affected quite a number of companies and people outside the 
+South  African  borders,  as  depicted  in  Figure  1.  This  has  an 
+impact  on  several  areas.    For  example,  although  some  of  the 
+leaked  data  might  not  at  first  glance  be  considered  as 
+personally  identifiable  information  since  it  relates  to  publicly 
+known  business  addresses,  it  should  be  noted  that  the  place 
+where 
+the  data  was  obtained  can  make  a  significant 
+contribution to the value of the data. Since the leaked business 
+
+ 
+
+addresses were located in a database and linked with a South 
+African  business  address,  the  implied  fact  is  that  the  one 
+business would be acting as the supplier and the other business 
+acting as the consumer. With this knowledge a competitor can 
+already determine the potential supplier list of a competitor’s 
+business and potentially gain an unfair advantage.  
+
+When focusing more on the information related directly to 
+South  Africa,  the  leaked  data  shows  that  the  affected 
+companies  have  definite  space  for  improvement  in  terms  of 
+their information security measures. For example, passwords in 
+databases  were  predominantly  stored  in  clear  text  and  when 
+encryption  was  used,  it  was  mostly  plain  MD5.  Most  of  the 
+MD5  encrypted  passwords  could  be  decrypted  with  a  simple 
+Google query and translated to either “admin” or “1234”. No 
+other  fields  except  session  cookies  were  encrypted  at  all, 
+making the theft of personal information all the more viable to 
+an  attacker.  Figure  2  depicts  the  address  information  that  is 
+available in the dataset within the South African borders. The 
+authors  made  use  of  the  Google  Streetview  Application 
+Programming Interface (API) to plot the data for both Figure 1 
+and  Figure  2.    This  provides  the  ability  to  zoom  in  to  street 
+level to look at the residence of a target, further visualizing the 
+extent of the data breach and perceived violation of personally 
+identifiable information.  
+
+Figure 1.   Worldwide Addresses Disclosed  (Own compilation) 
+
+ 
+
+Figure 2.   South African Addresses Disclosed (Own compilation)
+
+ 
+
+V. 
+
+INFORMATION AVAILABLE FROM THE LEAKED DATA 
+
+As an example of the type of information that can be deduced 
+from a data leak of this magnitude, Table II compares the most 
+commonly used passwords from the leaked South African data 
+with  AVG  Australia’s  published  list  of  most  commonly  used 
+passwords [12]. Although the South African list shows skewed 
+results (for example, the 213 instances of the password omni-
+id),  Table  II  provides  valuable  insight  into  South  African 
+information  security  practices.  (This  high  occurrence  relates 
+directly to the dataset used - the password omni-id was preset 
+as a user’s default password upon account creation within one 
+of the affected companies. Due to the volume of records from 
+that  company, 
+it  obtained  first  place  as  most  popular 
+password.) 
+
+TABLE II.  
+COMPARISON OF COMMONLY USED PASSWORDS – AVG 
+AUSTRALIA AND SOUTH AFRICAN OPERATION SUNRISE DATA LEAK (OWN 
+
+COMPILATION) 
+
+Ranking 
+
+Commonly Used 
+Passwords - 
+Australia 
+
+Amount 
+Found 
+
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+9.. 
+10. 
+11. 
+12. 
+13. 
+14. 
+15. 
+16. 
+17. 
+18. 
+19. 
+20. 
+21. 
+22. 
+23. 
+24. 
+25. 
+
+password 
+123456 
+12345678 
+abc123 
+qwerty 
+monkey 
+letmein 
+dragon 
+111111 
+baseball 
+iloveyou 
+trustno1 
+1234567 
+sunshine 
+master 
+123123 
+welcome 
+shadow 
+ashley 
+football 
+jesus 
+michael 
+ninja 
+mustang 
+password1 
+
+53 
+79 
+13 
+4 
+8 
+3 
+6 
+4 
+6 
+1 
+3 
+1 
+4 
+5 
+2 
+0 
+2 
+3 
+1 
+0 
+9 
+6 
+0 
+1 
+2 
+
+Commonly 
+Used 
+Passwords 
+– South 
+Africa 
+omni-id 
+123456 
+password 
+1234 
+12345 
+postnet 
+12345678 
+admin 
+favour 
+marketin 
+john 
+michelle 
+richard 
+P@ssw0rd 
+love 
+jesus 
+amanda 
+andrew 
+qwerty 
+louise 
+martin 
+vanessa 
+123456789 
+1111 
+Mickey 
+
+Amount 
+Found 
+
+213 
+79 
+53 
+43 
+23 
+22 
+13 
+11 
+11 
+10 
+10 
+10 
+10 
+9 
+9 
+9 
+8 
+8 
+8 
+8 
+8 
+8 
+7 
+7 
+6 
+
+The disconcerting fact is that the 25 most commonly used 
+passwords  for  both  Australia  and  South  Africa  are  either  too 
+short or blatantly obvious. International standards recommend 
+at  least  eight  characters  with  various  casing  and  special 
+characters, mixed in a not-pattern like fashion. From Table II it 
+can be seen that this is not applied in practice. 
+
+Table  III  shows  the  top  25  domain  names  found  in  the 
+leaked dataset.  Although not conclusive, the amount of unique 
+occurrences  of 
+the  respective  domains  raises  questions 
+regarding the accountability of the involved entities. Should the 
+affected  domains  analyze 
+the  data  and  notify  other 
+organizations  that  could  be  impacted  by  the  breach?  Are  the 
+compromised domains responsible to inform their clients that 
+they  are  victims  of  a  data  leak?  Although  very  relevant 
+questions  about  personally  identifiable  information,  the  in 
+depth investigation of these questions are beyond the scope of 
+this paper. 
+
+TABLE III.   MOST LEAKED DOMAIN NAMES IN THE SOUTH AFRICAN 
+
+OPERATION SUNRISE DATA LEAK (OWN COMPILATION) 
+
+Ranking  Domain 
+1. 
+2. 
+
+gmail.com 
+mail.uovs.ac.za 
+
+3. 
+4. 
+
+5. 
+6. 
+
+7. 
+8. 
+
+9.. 
+10. 
+
+11. 
+12. 
+
+13. 
+14. 
+
+15. 
+16. 
+
+17. 
+18. 
+
+19. 
+20. 
+
+21. 
+22. 
+
+23. 
+24. 
+
+25. 
+
+yahoo.com 
+postnet.com 
+
+hotmail.com 
+mweb.co.za 
+
+webmail.co.za 
+telkomsa.net 
+
+absa.co.za 
+norcrossa.com 
+
+yahoo.co.uk 
+aforbes.co.za 
+
+oldmutual.com 
+ukzn.ac.za 
+
+standardbank.co.za 
+iafrica.com 
+
+tileafrica.co.za 
+tiberty.co.za 
+
+vodamail.co.za 
+absamail.co.za 
+
+sanlan4u.co.za 
+liblink.co.za 
+
+fnb.co.za 
+qwa.uovs.ac.za 
+
+sanlam4u.co.za 
+
+Unique Occurrences 
+
+1994 
+1680 
+
+1525 
+1149 
+
+720 
+500 
+
+491 
+450 
+
+332 
+280 
+
+212 
+191 
+
+177 
+176 
+
+165 
+164 
+
+154 
+149 
+
+143 
+143 
+
+114 
+109 
+
+108 
+102 
+
+98 
+
+VI.  WHY PROTECTING PERSONALLY IDENTIFIABLE 
+
+INFORMATION IS CRITICAL 
+
+Besides  the  obvious  concerns  regarding  privacy  in  the 
+modern era, several key factors mandate that the accessibility 
+of  personally  identifiable  information  be  strictly  controlled. 
+Consider  that  something  as  mundane  as  spam  has  a  historic 
+open  rate  of  approximately  3%.  In  contrast,  targeted  spear 
+phishing attacks have an estimated 70% open rate. In addition, 
+research shows that spear phishing victims will actually follow 
+links included in the phishing message approximately 50% of 
+the  time  [13].  With  the  amount  of  personal  information 
+available  on  the  Internet  after  a  data  leak  of  this  magnitude, 
+attackers  have  a  lot  of  information  that  can  be  used  to  target 
+specific people in spear phishing attacks.  Thus, a data leak can 
+actually serve as a catalyst for further cyber attacks. 
+
+Perhaps  one  of  the  most  notable  public  instances  where 
+spear phishing has proven its effectiveness was in the breach 
+that  occurred  at  the  RSA  security  corporation  in  2011. 
+According to an investigative report by Matrix Global Partners 
+[14],  the  initial  foothold  into  the  company  was  obtained  by 
+sending  spear  phishing  emails.  The  emails  were  crafted  to 
+target selected employees and were tailored to align the content 
+as  much  as  possible  with  the  individual.      With  leaked  data 
+available on the Internet, this becomes relatively easy to do.  
+
+Identity theft is another thriving criminal activity and it is 
+not  surprising  that  in  a  country  that  has  a  staggeringly  high 
+unemployment rate, South Africa has also seen a huge increase 
+in  that  area.  Recent  statistics  place  the  estimated  loss  due  to 
+identity  theft  in  the  region of  R1  Billion  per  year  [15]. Once 
+again  the  obvious  benefits  for  attackers  from  a  data  leak  are 
+
+ 
+
+that the imposter can assume the identity of the victim and with 
+as much information as possible available on the Internet after 
+a  data  leak,  the  odds  significantly  reduce  the  chance  of 
+detection. Taking into account the information available in the 
+leaked  dataset,  the  imposter  can  impersonate  any  of  the 
+individuals  in  possession  of  a  degree  and  with  reasonable 
+certainty  obtain  a  position  or  credit  at  a  less  than  vigilant 
+organization. This is an illustration of just one scenario, but the 
+scope for identity theft is significantly increased by personally 
+identifiable information that is made available on the Internet. 
+
+One  of 
+
+the  main  problems  with  guarding  personal 
+information  is  that  the  information  is  so  intrinsically  linked; 
+one piece of information can lead to the disclosure of various 
+other  pieces  of  information.    Many  online  companies  can 
+provide credit, education and employment history checks for a 
+nominal  fee  via  either  a  cell  phone  or  ID  number  
+(for  example,  visit  http://demo.traceps.co.za).  This  ability  to 
+link various pieces of information is due to the South African 
+Regulation  of  Interception  of  Communications  and  Provision 
+of Communication-Related Information Act (RICA) requiring 
+that  cell  phones  and  ID  numbers  be  linked  for  identification 
+purposes.  Similarly  it  is  possible  for  law  enforcement  to 
+determine  all  required  information  such  as  financial  records 
+due to legislation such as the Financial Intelligence Centre Act 
+(FICA). Although this aids law enforcement, it also contributes 
+to  the  need  to  protect  all  personal  information.  Figure  3 
+displays  the  intrinsically  linked  information  that  is  available 
+from  a  South  African  ID  number,  using  just  the  Internet. 
+Although  the  online  services  do  prohibit  the  use  to  gather 
+information  regarding  a  third  party,  it  is  doubtful  that 
+determined ID thieves would be deterred. 
+
+ID Number
+
+Age, Birthday
+
+Voter 
+
+Registration 
+
+Alive/Dead
+
+Marriage Status
+
+Traffic Fines
+
+EBucks, Unisa, 
+
+etc
+
+Vehicles
+
+Location
+
+Province
+
+City
+
+Suburb
+
+Figure 3.   Basic relationship of personal information to South African ID number
+
+Consider  research  by  Florencio  and  Herley  [16],  proving 
+that  the  average  user  shares  the  same  password  across  3.9 
+different accounts. Add to the equation an attacker that has the 
+
+ability  to,  with  the  aid  of  personally  identifiable  information, 
+determine what services an individual has subscribed to and the 
+scenario  for  estimated  loss  changes  significantly  (both  in 
+
+ 
+
+monetary  value  and  potential  identity  compromise).  Even  if 
+just  one  of  a  user’s  accounts  combined  with  personally 
+identifiable  information  has  been  compromised,  the  impact 
+could potentially be felt across a number of related accounts, 
+compromising  additional  sensitive  information  (this  is  taking 
+into  consideration  Florencio  and  Herley’s  observation  that 
+users share the same password across multiple accounts; thus, 
+if one account is compromised by means of a password breach, 
+there are potentially another three accounts for the same user 
+with the same password).  
+With the release of the POPI Bill of 2009, it is no longer a case 
+of common sense to protect personally identifiable information 
+but it will also be a legal requirement. The Bill clearly specifies 
+what is considered personally identifiable information (refer to 
+Section  III),  the  penalties  involved  for  transgressing  the  law 
+and  security  requirements  for  a  company  storing  personal 
+information [9]. In this sense, losing/leaking data is expensive 
+both  from  a  holistic  view  (refer  to  Figure  3)  and  a  monetary 
+perspective.    According  to  research  done  the  cost  of  data 
+breaches where personally identifiable information is involved 
+has  increased  significantly  to  $3.94  per  record  at  the  lowest 
+estimate and to $194 at the highest with an average breach cost 
+of $3.7 million, up from $2.4 million in 2001 [17]. In addition, 
+the  estimated  revenue  lost  due  to  reduced  customer  loyalty 
+after a data leak varies by country but ranges from $289060 in 
+India to $3 million in the USA [18]. At the time of writing, no 
+
+official figures for South Africa could be obtained to compare 
+the costs of data breaches. 
+
+VII.  LESSONS TO BE LEARNED  
+
+There are a number of lessons to be learned from the South 
+African data leak of January 2013.  These lessons can largely 
+be mapped against the three areas identified that can potentially 
+be impacted by the leak (refer to Section II). 
+
+The first identified impact area relates to human emotions.  
+As stated in Section II, at the time of writing the extent of the 
+data  leak  was  not  yet  publicly  visualized,  thus  it  is  not  clear 
+how  human  emotions  may  impact  people’s  understanding 
+thereof.    However,  as  part  of  the  exploratory  process,  the 
+authors mapped the timeline (refer to Figure 4) from the date of 
+the  data  leak  to  the  date  that  the  data  was  removed  from  the 
+Internet  (refer  to  Table  1,  column  Data  Removed).    This  is 
+done  for  the  available  datasets  and  is  not  a  reflection  on  the 
+companies  involved  in  the  breach.  Due  to  the  nature  of 
+personally identifiable information leaked, the authors assume 
+that the extended period of time during which the information 
+remained  available  on  the  Internet  may  act  as  a  catalyst  for 
+human emotions. It should be understood that even though the 
+data is removed from the Internet, the attackers that placed it 
+there  could  still  have  access  to  the  data.  The  possible  attack 
+footprint is reduced by removing the public data but it is not 
+removed completely.  
+
+Figure 4.   Timeline of datasets’ availability on the Internet  
+
+ 
+
+The  second  identified  impact  area  relates  to  complex 
+datasets.  Not only does this paper show that all domains are 
+at  risk  (the  leaked  data  affected  government,  petroleum, 
+banking,  construction,  management,  networking,  mining, 
+transport  services,  education  and  other  enterprises),  but  it 
+raises  a  number  of  questions  regarding  the  personally 
+identifiable  information  and  the  responsibility  of  those 
+entities 
+identifiable 
+information.    The  intrinsically  linked  nature  of  personally 
+identifiable information, as presented in Figure 3, touches on 
+the complex nature of these specific datasets.    
+
+tasked  with  handling  personally 
+
+The third identified impact area relates to the processing 
+of  unstructured  data  sources.    This  area  emphasizes  the 
+important  role  that  legislation  plays  when  working  with 
+personally identifiable information – special care should be 
+taken  to  ensure  that  South  African  legislation  provides 
+unambiguous 
+identifiable 
+information,  associated  responsibilities  (of  compromised 
+companies,  affected  domains  and  victims)  and  measures  of 
+protection. 
+
+personally 
+
+guidance 
+
+on 
+
+Cachin  and  Schunter  [19],  amongst  other  researchers, 
+have shown that the rate of attack on companies might have 
+
+decreased  a  bit,  but  the  volume  of  data  leaked  with  each 
+attack has grown tremendously. Research institutions such as 
+Deloitte  [20]  and  Cibecs  [21]  respectively  present  surveys 
+stating  that  53%  of  companies  are  not  ready  for  POPI  and 
+26%  of  companies  have  not  even  started  to  prepare. 
+Attackers  are  thus  getting  better  at  extracting  information 
+from leaked datasets while the victims are still struggling to 
+understand  the  legal  requirements  presented  to  them  in  the 
+form  of  South  African  legislation.  With  the  data  from  the 
+relatively small South African attack presented in this paper, 
+it  remains  an  open  question 
+if  both  business  and 
+administrators are ready for the new laws being signed into 
+effect. 
+
+VIII.  CONCLUSION 
+
+leak 
+
+identifiable 
+
+The data leak affecting several South African companies 
+has had a significant impact on the way that the security of 
+personally 
+information  can  be  perceived.  
+Compared  to  international  security  breaches,  the  South 
+African  data 
+is  relatively  small  and  contained.  
+However, it provides a number of lessons to be learned from. 
+The  information  and  analysis  presented  in  this  paper  is 
+the  result  of  research  and  interpretation  performed  by  the 
+authors.  The  findings  and  assumptions  are  based  on 
+information  that  was  retrieved  from  publicly  accessible 
+websites.  The content of the datasets were not verified with 
+the affected companies, and as such none of the findings or 
+assumptions  made  in  this  paper  are  binding  or  place  an 
+obligation or blame on the companies involved. The findings 
+are  the  interpretations  of  the  authors,  based  on  publicly 
+available information of the data leak. The aim of this paper 
+was to loosely analyze the data released from the breach and 
+to  visually  present  the  extent  of  the  compromise  to  aid  in 
+furthering the importance of implementing and maintaining 
+information  security  measures,  as  well  as 
+adequate 
+awareness 
+towards 
+responsibility  associated  with 
+handling personally identifiable information.  
+
+the 
+
+Although  the  nature  of  this  research  is  exploratory,  the 
+paper  provides  insight  into  the  value  of  leaked  personally 
+identifiable information on the Internet.  It further touches on 
+the  contribution  that  South  African  legislation  has  on  the 
+intrinsically 
+identifiable 
+information, and what the resultant impact can be if this type 
+of information is made available on the Internet. 
+
+linked  nature  of  personally 
+
+ 
+
+REFERENCES 
+
+[1]  Hanlon, T.  2011.  PlayStation Network hacked, personal information 
+from: 
+
+of 
+  Available 
+http://www.gizmag.com/playstation-network-hacked/18501/ 
+(Accessed 15 April 2013). 
+
+77  million 
+
+accessed. 
+
+accounts 
+
+[2]  Selvan, S.  2013.  #ProjectSunRise: Team GhostShell leaked 700000 
+accounts  from  South  Africa.    Available  from:  http://www.ehacking 
+news.com/2013/01/projectsunrise-team-ghostshell-leaked.html 
+(Accessed 15 April 2013). 
+
+[4]  Chen, C.  2005.  Top 10 unsolved infromation visualization problems.  
+
+IEEE Computer Graphics and Applications.  25(4):12-16. 
+
+[5]  Grady,  D.    1993.   The  vision  thing:  Mainly  in  the  brain.   Discover 
+magazine.    Available  from:  http://discovermagazine.com/1993/jun/ 
+thevisionthingma227#.UWvKcLX-FCg (Accessed 10 April 2013). 
+
+[6]  Bertini, E. & Lalanne, D.  2009.  Surveying the complementary role 
+of automatic data analysis and visualization in knowledge discovery.  
+Proceedings of the ACM SIGKDD workshop on visual analytics and 
+knowledge discovery.  Pp 12 – 20.  Paris, France.  ACM. 
+
+[7]  Marty,  R.  2009.  Applied  security  visualization.  Addison-Wesley, 
+
+2009. 
+
+[8]  Loukissas, Y. & Mindell, D.  2012.  A visual display of sociotechnical 
+data.    CHI’12  Extended  abstracts  on  human  factors  in  computing 
+systes.  Austin: ACM.   
+
+[9]  Protection  of  Personal  Information  Bill.    2009.    Available  from: 
+
+http://www.justice.gov.za/legislation/bills/B9-2009_ProtectionOf 
+PersonalInformation.pdf (Accessed on 2 February 2013). 
+
+[10]  Electronic Communications and Transactions Act.  2002.  Available 
+http://www.info.gov.za/view/DownloadFileAction?id=68060 
+
+from: 
+(Accessed on 2 February 2013). 
+
+[11]  Cyber  War  News.    2013.   Break  down  and  insight  into  project  sun 
+rise  African  data  leak.    Available  from:  http://www.cyberwarnews. 
+info/reports/break-down-and-insight-into-project-sun-rise-african-
+data-leak/ (Accessed 14 February 2013). 
+
+[12]  AVG. 2012. World’s 25 worst passwords revealed – Is yours one of 
+them?.  Available  from:  http://wwwresources.avg.com.au/security_ 
+risks/worlds-25-worst-passwords/ (Accessed 16 February 2013). 
+
+[13]  FireEye. 2012. Spear phishing attacks – Why they are successful and 
+how  to  stop  them.  Available  from:  http://www.computerworld 
+.com.au/whitepaper/370771/spear-phishing-attacks-why-they-are-
+successful-and-how-to-stop-them/download/  (Accessed  20  March 
+2013). 
+
+[14]  Matrix  Global  Partners.  2011.  RSA  breach:  Analysis  and  protection 
+recommendations.  Available  from:  http://www.matrixgp.com/Files/ 
+StormShield/RSA_Whitepaper_Aug_2011.pdf  (Accessed  10  April 
+2013). 
+
+[15]  Hoffman, S.K. & McGinley, T.G.  2011.Identity Theft. ABC-CLIO. 
+
+2011. 
+
+[16]  Florencio, D & Herley, C. 2007. A large-scale study of web password 
+habits.  Proceedings  of  the  16th  international  conference  on  World 
+Wide Web. Pp 657- 666. Banff, Canada. ACM. 
+
+[17]  NetDiligence. 2012. Cyber liability & data breach insurance claims, 
+A study of actual payouts for covered data breaches. Available from: 
+http://www.netdiligence.com/files/CyberClaimsStudy-2012sh.pdf. 
+(Accessed 6 April 2013). 
+
+[18]  Ponemon.  2011.  Global  cost  of  data  breach  study.  Available  from: 
+
+http://www.symantec.com/content/en/us/about/media/pdfs/b-
+ponemon-2011-cost-of-data-breach-global.en-us.pdf 
+April 2013). 
+
+(Accessed  10 
+
+[19]  Cachin,  C.  &  Schunter,  M.    2011.    A  cloud  you  can  trust.    IEEE. 
+
+48(12):28-51. 
+
+[20]  Deloitte.    2012.    Why  SA  companies  should  take  heed  of  the 
+from: 
+
+Protection  of  Personal 
+http://deloitteblog.co.za/tag/protection-of-personal-information-bill/ 
+(Access 3 March 2013). 
+
+Information  Bill. 
+
+  Available 
+
+[21]  Cibecs.  2012.  Survey results: Only 26% of South African companies 
+preparing  for  POPI  Bill.    Available  from:  http://www.itweb.co.za/ 
+office/cibecs/PressRelease.php?StoryID=234936  (Accessed  3  March 
+2013). 
+ 
+
+[3]  Carbone, N.  2012.  Outrage after New York paper posts map of gun 
+from: 
+
+owners’ 
+http://newsfeed.time.com/2012/12/26/outrage-after-new-york-paper-
+posts-map-of-gun-owners-names-and-addresses/(Accessed 
+February 2013). 
+
+addresses. 
+
+Available 
+
+names 
+
+and 
+
+14 
+
+ 
+
+

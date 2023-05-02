@@ -1,0 +1,1169 @@
+Enhancing Digital Business Ecosystem Trust and           
+
+Reputation with Centrality Measures  
+
+         Donovan Isherwood1 and Marijke Coetzee2 
+Academy of Computer Science and Software Engineering 
+
+University of Johannesburg, Johannesburg, 
+
+donovan.isherwood@gmail.com1 marijkec@uj.ac.za2 
+
+South Africa 
+
+ 
+ 
+
+Abstract—  Digital  Business  Ecosystem  (DBE)  is  a  decentralised 
+environment  where  very  small  enterprises  (VSEs)  and  small  to 
+medium  sized  enterprises  (SMEs)  interoperate  by  establishing 
+collaborations with each other. Collaborations play a  major role 
+in  the  development  of  DBEs  where  it  is  often  difficult  to  select 
+partners,  as  they  are  most  likely  strangers.  Even  though  trust 
+forms  the  basis  for  collaboration  decisions,  trust  and  reputation 
+for  each  participant. 
+information  may  not  be  available 
+Recommendations 
+therefore 
+necessary to  help with the selection process. Given the  nature of 
+DBEs,  social  network  centrality  measures  that  can  influence 
+power and control in the network need to be considered for DBE 
+trust  and  reputation.  A  number  of  social  network  centralities, 
+which influence reputation in social graphs  have been studied in 
+the  past.  This  paper  investigates  an  unexploited  centrality 
+measure, betweenness centrality, as a metric to be considered for 
+trust and reputation.  
+
+from  other  participants  are 
+
+Keywords:  Digital  Business  Ecosystem, 
+
+trust,  reputation, 
+
+centrality measures, social network analysis 
+
+I     INTRODUCTION 
+
+The adoption of new forms of e-business for small and medium 
+enterprise  (SME)  has  been  identified  as  a  key  priority  for 
+fostering  innovation  and  competitiveness  [37].  A  Digital 
+Business  Ecosystem  (DBE)  is  an  environment  where  very 
+small enterprises (VSEs) and small to medium sized enterprises 
+(SMEs)  can  interoperate.  The  aim  of  the  Digital  Business 
+Ecosystem  is  to  support  its  participants  to  co-evolve  in  a 
+competitive  but  at  the  same  time  collaborative  environment 
+[27].  Collaboration  ensures  that  the  entire  Digital  Business 
+Ecosystem’s  market  value  is  increased  to  be  able  to  compete 
+against bigger competitors [23].  
+
+The  Digital  Business  Ecosystem  vision  presents  unique 
+challenges  that  are  difficult  to  manage  as  it  employs  a 
+decentralised  model  that  is  open  to  a  diverse  range  of 
+participants  across  many  locations.  It  is  apparent  that  peer-to-
+peer (P2P) implementations lend themselves naturally to digital 
+ecosystem architectures [19]. Interactions in a Digital Business 
+Ecosystem  can  be  modeled  by  a  multi-agent  peer-to-peer 
+network  where  agents  represent  VSEs  and  SMEs  that  interact 
+with  each  other.  The  network  of  agents  can  be  viewed  as  a 
+social  graph  where 
+the  agents  are  the  nodes  and  the 
+relationships are the edges.  
+
+strangers at the time is difficult. Since trust forms the basis of 
+all human interaction, collaboration and society [6], agents can 
+decide to collaborate based on the trust they have in each other. 
+The  more  trustworthy  a  partner  is,  the  higher  its  reputation  is 
+likely  to  be  in  its  community.  Participants  with  higher 
+reputation  are  more  likely  to  be  selected,  leading  to  further 
+business  and  more profit.  Modeling,  computing  and  analyzing 
+trust  and  reputation  for  Digital  Business  Ecosystems  is  a 
+challenging  issue  as  participants  leave  and  join  the  network 
+continuously.  Social  network  analysis  is  a  rich  model  in 
+conceptualization and  investigation. It provides a powerful set 
+of  concepts  and  methods  for  designing,  modeling  and 
+analyzing  complex  situations  [26].  The  motivation  for  this 
+paper is to discover social network metrics that can be used to 
+assist with trust and reputation for Digital Business Ecosystem.  
+
+Next,  section  2  provides  a  motivating  example  to  give 
+background on  a  Digital Business  Ecosystem.  Section 3  gives 
+background  on  Digital  Business  Ecosystem 
+trust  and 
+reputation.  In  section  4,  the  Digital  Business  Ecosystem  is 
+defined  in  terms  of  a  social  graph,  and  the  properties  that 
+influence social graphs with regards to trust and reputation are 
+discussed. Section 5 identifies how closeness and betweenness 
+can  influence  trust  and  reputation  and  proposes  a  framework 
+for  Digital  Business  Ecosystem  trust  and  reputation  systems. 
+Section 6 concludes the paper.  
+
+I.  MOTIVATING EXAMPLE 
+
+ 
+
+Consider  the  Digital  Business  Ecosystem  social  network 
+graph in Figure 1. It consists of nodes representing very small 
+enterprises (VSE) such as builders and plumbers, and medium 
+sized enterprises (SMEs)  such  as  suppliers, collaborating  with 
+each  other.  The  connectivity  of  nodes  indicated  by  the  social 
+graph is generally not defined by geography or proximity, but 
+by information sharing and transactions between nodes.   
+
+In  time,  participants  who  do  not  successfully  exchange 
+information  become  less  strongly  connected,  and  those  who 
+contribute achieve stronger connections. This leads to a small-
+world  network  topology  where  node  position  in  the  network 
+plays a major role in the economic growth of the node. Small-
+networks  have  many 
+strongly  connected  clusters  or 
+communities,  see  labels  x  –  z  in  Figure  1,  with  a  few 
+connections between these communities. These networks have  
+
+As  collaborations  play  a  major  role  in  the  development  of 
+Digital Business Ecosystems, the selection of partners who are 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Figure 1. Digital Business Ecosystem 
+
+ 
+
+ 
+
+very  high  clustering  coefficient  and  small  characteristic  path 
+lengths [26].  
+
+For  any  node  seeking  to  form  collaborations,  there  is  the 
+problem  of  choosing  a  partner.  Partnering  with  any  available 
+VSE  or  SME  is  not  feasible  as  their  reliability  is  not  known 
+beforehand.  By  making  use  of  recommendations  from  others, 
+better  partners  can  be  selected.  Such  recommendations  are 
+highly  influenced  by  the  extent  of  overlap  of  social  relations 
+between  VSEs  or  SME.  There  is  generally  a  tendency  for 
+nodes  to  ask  recommendations  from  partners  that  are  close  to 
+them  in  the  network  space.  For  example,  if  my  partners  have 
+had good experiences with a specific SME, my perceived value 
+of  that  SME  increases.  The  network  of  immediate  contacts  is 
+thus  an  important  source  of  information  about  possible  future 
+contacts. Also, the number of indirect links between two VSEs 
+may  have  an  effect  on  the  probability  that  they  will  form  a 
+direct  link  or  partnership  in  the  future.    In  Digital  Business 
+Ecosystems  no  central  party  can  dominate because  this  would 
+provide a significant barrier to the growth and sustainability of 
+the  environment.  If  a  node  such  as  eBuild  Co  would  like  to 
+become  a  strong  competitor  in  the  environment,  they  need  to 
+collaborate  with  those  who  have  the  strongest  ties  in  the 
+network in order to be successful. eBuild Co will thus have to 
+determine 
+reputation  of  other  nodes  by  sourcing 
+recommendations before making a decision to collaborate with 
+them.  If  eBuild  Co  knew  that  the  most  trusted  and  effective 
+community  was,  for  example,  community  x  they  would  try  to 
+
+the 
+
+become  part  of  this  community.  This  can  only  be  made 
+possible  if  a  node  in  the  Digital  Business  Ecosystem, 
+positioned  in  between  the  two  communities  could  introduce 
+eBuild  Co  to  this  group.  It  is  thus  important  for  eBuild  Co  to 
+determine who these brokers are as they play an important role 
+in fostering growth and innovation.  
+
+Next,  trust  and  reputation  features  of  Digital  Business 
+
+Ecosystem systems are described.  
+
+II. DIGITAL BUSINESS ECOSYSTEM TRUSTAND 
+
+REPUTATION 
+
+A Digital Business Ecosystem can be represented as society 
+of  autonomous  agents  conforming  to  a  peer-to-peer  network 
+architecture  [19]  [23].  These  autonomous  agents  compete  and 
+collaborate  with  each  other  to  benefit  themselves  and  the 
+communities they inhabit. The location of a specific member of 
+a  community  within  a  Digital  Business  Ecosystem  social 
+network  can  be  used  to  infer  some  properties  about  their 
+reputation. Organisations that are effective and highly regarded 
+by most members of the Digital Business Ecosystem tend to be 
+highly  connected  nodes  in  the  social  network  graph.  Such 
+information  could  be  used  by  the  reputation  mechanism  of 
+agents  instead  of  having  to  use  the  ratings  issued  by  each 
+participant.  
+
+It is necessary to clearly distinguish between the notions of 
+trust  and 
+for  Digital  Business  Ecosystems. 
+Reputation  is  generally  computed  over  a  period  of  time, 
+
+reputation 
+
+Supplier BSupplier ASupplier CBuilder BBuilder AeBuild CoPlumbernmPlumberElectricianBuilderPlumberPlumberElectricianSupplier DElectricianBuilderwxyzwhereas  trust  is  based  on  a  personal  bias  before  taking  a 
+decision to interact with another person.  
+
+Ecosystem  agent  forms  a  subjective  opinion  on  participants  it 
+interacts with based on the computation it performs.   
+
+Literature  defines  trust  as  the  extent  to  which  one  party  is 
+willing  to  depend  on  something  or  somebody  in  a  given 
+situation  with  a  feeling  of  relative  security,  even  though 
+negative  consequences  are  possible  [6]  [21].  If  the  agent  of 
+Builder  A  has  trust  in  the  agent  of  eBuild  Co,  it  is  confident 
+that  the  agent  will  behave  in  a  particular  way.  Trust  is 
+subjectively formed [19] and cannot be assumed to be mutual. 
+The trust value used by the agent represents the confidence the 
+agent has in the expected behaviour of another.   
+
+Reputation  is  an  objective  measure  assigned  to  an  agent, 
+representing  the  collective  evaluation  from  a  group  of  agents 
+that  have  interacted  with  it.  The  reputation  of  Supplier  A  is 
+based  on  all  past  actions  with  the  agents  that  it  has  interacted 
+with  and  associated  ratings  [19].  An  agent  with  a  good 
+reputation will be trusted more by other agents, than one with a 
+bad  reputation.  This  implies  that  trust  can  be  built  through 
+reputation.  
+
+it  simply  encodes 
+
+The  interactions  between  Digital  Business  Ecosystem 
+participants  can  be  recorded  by  a  graph,  where  an  arc  in  the 
+graph  corresponds  to  an  interaction  between  the  participants 
+who are nodes of the graph. Such a graph can be called a social 
+network  as 
+interactions  among  all 
+participants.  If  a  network  graph  is  directed,  an  edge  from 
+Builder  A  to  Builder  B  implies  that  Builder  A  recommends 
+Builder  B.  Intuitively,  network  graph  centrality  measures  are 
+established  over  aspects  such  as  trust  transitivity,  where  it  is 
+more likely that individuals will interact with friends of friends 
+than with unknown parties. Also, individuals are more inclined 
+to trust someone who is trusted by some of their trusted friends. 
+Important questions that arise are - where is the graph stored? 
+How  is  the  trust  computation  done?  How  can  the  trust  metric 
+be used to help making decisions?  
+
+In  order  to  evaluate  a  Digital  Business  Ecosystems 
+participant’s  trustworthiness,  an  agent  needs  to  rely  on  the 
+judgments  of  other  peers  who  have  already  interacted  with 
+them  and  shared  their  impression.  These  impressions  are 
+expressed as trust metrics. Trust metrics are divided into those 
+with global and those with local scope [31].  
+
+Global  trust  metrics  take  into  account  all  members  of  the 
+social  network  and  their  relationships.  A  global  trust  rank  is 
+computed based on the opinion of all nodes in the network. A 
+disadvantage is that the entire graph must be known and stored 
+and the computation may be expensive.  
+
+On the other hand, when computing trust and reputation in 
+the  local  community  or  neighbourhood,  only  the  local  graph 
+needs to be explored. These local trust metrics are subjective as 
+they are personalized and their computation scales well.  Local 
+trust metrics operate on partial trust graph information defined 
+by  personalized  webs of trust  where  only  neighbour  links  and 
+their  direct  links  are  explored  to  a  set  of  nodes  reachable 
+through  these  relationships.  Merging  these  local  trust  web 
+graphs gives the global trust graph. 
+
+The  nature  of  Digital  Business  Ecosystems,  therefore 
+dictate  that  local  trust  metrics  should  be  preferred  because  of 
+its  decentralised  peer-to-peer  architecture.  A  Digital  Business 
+
+to 
+
+Approaches 
+
+trust  and  reputation  computation  are 
+generally  classified  as  centralised  or  decentralised  [31].  More 
+recently,  hybrid  approaches  [34]  accommodate  the  difficulties 
+of decentralised reputation systems.  
+
+Centralised:  Centralised  trust  and  reputation  systems  are 
+found  in  e-commerce  applications,  for  example,  eBay  [8]. 
+Here, a central entity is responsible for collecting ratings from 
+all parties involved in an interaction. The reputation of users is 
+public  and  global  and  is  computed  by  the  system.  The 
+advantage is that there is less communication required between 
+users.   
+
+trust  and 
+
+Decentralised: 
+
+In  decentralised 
+
+reputation 
+systems,  agents  represent  users  or  organisations.  There  is  no 
+central  party  for  agents  to  share  their  ratings  with  each  other 
+and  no  global  or  public  reputation  exists  [8].  For  example, 
+when Builder A wants to find out the reputation of Builder B, 
+it’s agent has to ask other agents for their ratings about Builder 
+B,  including  those  of  Builder  A’s  friends  or  the  friends  of 
+friends.  This  implies  a  large  volume  of  communication 
+between agents. These ratings are then combined by the agent 
+of Builder A to determine the reputation of Builder B.  
+
+Hybrid:  Recent  work  introduced  a  super-agent  based 
+mechanism  [34],  inspired  from  super-peer  networks,  for 
+reputation  management  to  solve  the  inefficiency  problem  of  a 
+decentralised trust and reputation systems. Now, an agent with 
+poor capabilities will not be able to cause system blockages as 
+in a true decentralised approach. Super-agents collect and store 
+feedback about services, build reputation of services, and share 
+reputation  information  with  other  agents.  A  super-agent  can 
+form communities based on its interests and judging criteria. A 
+community-based  reputation  for  services,  found  on 
+the 
+collective  opinion  of 
+its  community  members  can  be 
+developed, and shared with the community members. 
+
+their  agents  need 
+
+Even  though  centralised  methods  are  simpler  and  more 
+efficient to use they may not be well-suited to Digital Business 
+in  Digital 
+Ecosystems.  As  participants  are  autonomous 
+Business  Ecosystems, 
+to 
+follow  a 
+decentralised  approach  where  they  can  decide  how  to  weigh 
+ratings provided  by other agents  based  on  how  much  they  are 
+trusted, thereby ensuring personalized reputation. However, for 
+Digital  Business  Ecosystems  this  approach  represents  some 
+difficulties  such  as  how  to  find  reputation  information.  In  a 
+centralised  system,  the  central  entity  in  charge  stores  the 
+reputation  graph  and  related  information.  In  a  decentralised 
+P2P  network  the  answer  is  not  clear-cut.  The  agent  may  not 
+know  which  other  agents  have  interacted  with  this  agent  for 
+whom they are trying to build reputation. Also, agents  are not 
+always  available  at  all  times.  If  they  are  offline,  their  ratings 
+about other agents are not available at the time of request. Also, 
+the  Digital  Business  Ecosystem  illustrated  in  Figure  1  is 
+typically  a  small-world  network  that  has  a  few  strongly 
+connected  communities,  with  a  few  connections  between 
+communities. Very often, participants of these communities are 
+not  sophisticated  and  do  not  have  the  ability  to  support  and 
+manage  a  reputation  system.  A  super-agent  approach  to  trust 
+
+and  reputation  may  therefore  ideally  be  suited  to  Digital 
+Business Ecosystems environments.  
+
+In the following section, social network centrality metrics is 
+described  in  the  context  of  Digital  Business  Ecosystem  trust 
+and reputation systems.  
+
+III.  TRUST AND REPUTATION USING SOCIAL 
+
+NETWORK ANALYSIS 
+
+the  patterns,  behaviours  and 
+
+The  underlying  idea  of  deriving  a  participant  node’s 
+reputation  from  a  social  network  topology  is  that  reputable 
+members  in  a  social  network  tend  to  be  highly  connected 
+powerful people who are experts or people who share valuable 
+resources  easily.  Such  measures  can  be  determined  by  social 
+network analysis that is a technique used to study social graphs 
+to  analyse 
+interactions  of 
+communication  in  social  groups  [26].  Key  players  in  a  social 
+network  can  be  identified  as  well  as  groups  in  large  and 
+complex  social  networks.  Groups  represent  clusters  in  the 
+social  graph  consisting  of  nodes  that  are  more  central,  nodes 
+that  are  peripheral,  and  nodes  that  lie  in  between  all  these 
+nodes [26]. One of the main  social network analysis measures 
+is centrality which is used to define the actor’s position relative 
+to the other actors in his or her social graph [26].  
+
+reputation  system 
+
+Many  reputation  systems  are  based  on  network  graph 
+centrality  measures.  An  example  of  a  well-known  network 
+graph-based 
+is  PageRank  [33].  The 
+PageRank  algorithm  uses  hyper-links  as  a  sign  that  one  web 
+page  recommends  another  web  page.  PageRank  can  also  be 
+used  to  indicate  the  number  of  times  a  random  surfer  visits  a 
+web page, thereby reflecting the popularity and reputation of a 
+web page. A drawback of PageRank as a reputation measure is 
+that all outgoing links from a node are considered equally and 
+not whether the interaction was a good or bad experience [35]. 
+In order to address this problem the TrustRank [33] algorithm 
+was defined.   
+
+The focus of the discussion is on the local and decentralised 
+characteristics  of  social  network  graphs,  to  accommodate  the 
+nature  of  Digital  Business  Ecosystem  trust  and  reputation 
+systems.  Next,  the  social  network  perspective  used  in  social 
+network analysis is described. The role and effect of centrality 
+measures on trust and reputation is then analyzed.  
+
+A.  Network perspective 
+
+Network perspective of social network analysis is achieved 
+from  two  perspectives,  a  socio-centric  perspective  and  an 
+egocentric perspective. 
+
+1) 
+
+Socio-centric Perspective 
+
+A  socio-centric  perspective  analyses  a  complete  and 
+bounded  social  graph  from  a  global  perspective  [7].  Figure  1 
+gives the socio-centric view of the Digital Business Ecosystem 
+social graph. Here, trust metrics take into account all the peers 
+as  well  as  the  trust  links  that  connect  them  [31].  This  means 
+that  each  node  only  consider  the  global  reputation  of  nodes 
+calculated  via  a  centralised  reputation  manager  that  can  view 
+the  entire  network.  As  mentioned,  this  is  process  intensive  as 
+the  complete  social  graph,  which  may  change  continuously, 
+needs  to  be  considered.  The  centralised  and  global  approach 
+limits the personalised property of trust as a nodes trust would 
+
+only  be  considered  from  a  single  third  party  perspective  and 
+not  personally  [14].  Due  to  these  facts  this  approach  would 
+therefore not be useful in Digital Business Ecosystem trust and 
+reputation systems.  
+
+2) 
+
+Egocentric Perspective 
+
+the  connections  between 
+
+An egocentric perspective analyses only the ego network of 
+a  node  which  consists  of  the  node  (actor),  its  friends  (alters) 
+and  all 
+them  [7].  The  ego 
+neighborhood is the collection of ego and all nodes with which 
+ego  has  a  connection  at  some  path  length.   In  social  network 
+analysis,  this  includes  only  ego  and  actors  that  are  directly 
+adjacent and all of the ties among all of the actors to whom ego 
+has a direct connection [31]. If one considers  eBuild Co as an 
+ego 
+the 
+neighbourhood to be considered.  
+
+then  community  w  would  be 
+
+in  Figure  1, 
+
+Performing  trust  and  reputation  computations  from  this 
+perspective  is  less  process  intensive  as  each  node  such  as 
+eBuild  Co  only  maintains  trust  and  reputation  for  its  own 
+locally  stored  ego  network.  It  is  natural  to  use  an  egocentric 
+perspective  in  peer-to-peer  networks  due  the  decentralised 
+nature of these networks.  
+
+Next,  social  network  centrality  measures  for  Digital 
+
+Business Ecosystem trust and reputation are discussed.  
+
+B.  Social network centrality for trust and reputation  
+
+Centrality measures give the relative importance of a node 
+within the graph [7]. In social networks, trust and reputation is 
+computed  by  considering  the  strength  of  the  relationship 
+between  two  nodes  defined  by  direct  trust,  and  the  further 
+influence  of  other  relationships  defined  by  indirect  trust.  In 
+direct  trust,  local  social  network  centralities  to  be  considered 
+are degree centrality and tie strength. These metrics can affect 
+the  availability  and  accuracy  of  recommendation  information 
+provided to and about the node. Indirect trust on the other hand 
+is  a  result  of  the  transitive  property  and  propagation  of  trust 
+which  can  be  influenced  by  a  number  of  centrality  measures 
+such  as  shortest path, density  and clustering  coefficient.  Short 
+paths  and  dense  clusters  can  lead  to  more  accurate,  reliable, 
+and trustworthy indirect trust values and recommendations.  
+
+Direct and indirect trust, as well as the centrality measures 
+
+that influence these trust values, are discussed next.  
+
+Direct Trust 
+
+Direct  trust  exists  between  two  nodes  that  have  a  trust 
+relationship  established;  this  is  sometimes  referred  to  as 
+individual  trust  [25] [17].  Consider  the  case of just  two  nodes 
+as in Figure 2. A  Builder and eBuild Co, taken from Figure 1, 
+is  labeled  A  and  B  respectively.  There  are  always  three 
+elements that form trust regardless of which definition is used, 
+namely, the trustor, trustee, and the state of trust [9] [1]. If B is 
+the  trustor  and A  the  trustee, Tb-a is  the  state of trust.  Trust  is 
+subjective  meaning  that  B  will  not  necessarily  trust  A  to  the 
+same extent that A will trust B and vice versa. This implies that 
+trust is asymmetric [14]. The direct trust value can evolve over 
+time  as  the  two  companies  collaborate  more  often  thereby 
+potentially  forming  a  stronger  trust  relationship.  In  figure  2, 
+each  node  has  a  single  incoming  and outgoing link. Trust  and 
+reputation  computation  may  be  very  different  for  nodes  with 
+many links, than with nodes with few links. 
+
+Figure 2. Direct trust relationship 
+
+ 
+
+Social  network  metrics  to  be  considered  next  are  degree, 
+in  ego 
+
+tie  strength.  Both  can  be  used 
+
+density  and 
+neighborhoods such as community w in Figure 1.  
+
+1) 
+
+Degree 
+
+The  degree  centrality  of  a  node  is  defined  as  the  total 
+number  of  connections  the  node  has  [2]  [18].  In  a  directed 
+graph  there  are  two  degrees  namely  outdegree  and  indegree. 
+Outdegree  is  the  number  of  connections  a  node  has  to  other 
+nodes,  i.e.  the  number  of  nodes  that  can  be  reached  from  a 
+node in one hop [4]. In Figure 2, both nodes have an indegree 
+and outdegree of 1.  
+
+The  effect  of  degree  on  trust  is  that  it  can  be  seen  as  a 
+parameter  which  defines  the  extent  to  which  a  node  would 
+convey  information  about  another  node  to  the  trustor  [1].  A 
+node  that  is  reliable  will  have  a  higher  outdegree  than  a  node 
+who is less reliable [1]. Indegree is the extent to which a node 
+receives information about another node from the other nodes. 
+Therefore, node with both high indegree and outdegree are well 
+connected  and  could  therefore  play  an  important  role  in  the 
+computation of trust and reputation.  
+
+2) 
+
+Tie Strength 
+
+In  social  network  analysis,  tie  strengths  are  classified  as 
+either strong ties or weak ties and it refers to the strength of the 
+relationship.  A  strong  tie  represents  a  strong  trust  relationship 
+between  two  nodes  and  a  weak  tie  represents  a  lower  trust 
+relationship  between  two  nodes.  The  weight  which  is  used  to 
+measure  the  strength  of  ties  is  the  weight  of  the  edges 
+connecting  nodes.  Weak  ties  will  have  a  weight  relatively 
+smaller  than  the  weights  of  the  connections  a  node  regularly 
+maintains, and the opposite is true for strong ties [18]. A node 
+with  many  strong  ties  will  be  more  trusted  than  a  node  with 
+many weak ties.  
+
+Indirect Trust 
+
+Now  consider  the  case  where  the  social  network  graph 
+grows  and  more  nodes  are  linked  together.  Another  Builder, 
+shown  as  C  establishes  a  relationship  with  B.  There  is  direct 
+trust  between  these  two  nodes.  If  A  would  like  to  collaborate 
+with  C  it  may  ask  B  for  a  recommendation  of  C.  The 
+transitivity  property  of 
+the  network  topology 
+identifying paths can be used to assist A in its decision whether 
+it  should  trust  C.  Because  of  the  number  of  links,  trust  is 
+propagated through the network [14] [17] [22]. Transitive trust 
+implies that if A trusts B and B trusts C then it is inferred that 
+A can trust C to some degree [24].  
+
+trust  and 
+
+The  trust  established  from  transitive  trust  is  known  as 
+
+indirect trust as it is determined by   recommendations [31].  
+
+Figure 3. Indirect trust relationship 
+
+ 
+
+The  reputation  of  B  will  influence  A’s  decisions  on  how 
+much  trust  to  place  in  C.  If  there  were  many  nodes  linked  to 
+both  A  and  C,  A  would  have  had  to  aggregate  all  the 
+recommendations received on C using an algorithm. Important 
+centrality metrics that have an effect on this situation is shortest 
+path, network density and clustering coefficient.  
+
+3) 
+
+Shortest Path 
+
+When indirect trust is computed, a number of paths may be 
+found linking two nodes. The shortest path between two nodes 
+in  a  social  graph  is  defined  as  the  geodesic  distance  between 
+these  nodes according  to  the unit  length of  the  edges  [2]. The 
+unit  of  length  is  the  weight  of  an  edge.  This  weight  is  not 
+necessarily a distance measure but can also be, for example, the 
+trust  level  of  the  relationship  [17].  In  terms  of  the  transitive 
+trust  property  and  trust  propagation,  the  shorter  the  path 
+between  two  nodes,  the  more  trustworthy  the  indirect  trust 
+value will be [14] [17]. This is due to the fact that a node will 
+trust its direct contacts more but the further away the nodes get, 
+the  trust  value  of  these  nodes  will  be  less,  leading  to  a  less 
+trustworthy recommendation. To be able to find a short path to 
+other nodes the complete social network must be known. This 
+measure  is  global  and  cannot  be  applied  to  a  locally  stored 
+social network graph of an ego neighborhood. 
+
+4) 
+
+Density 
+
+Density  is  the  number  of  connections  a  node  has,  divided 
+by the number of possible connections [4].  Densely clustered 
+networks  are  more  likely  to  lead  to  strong  trust  and  a  shared 
+identity  [5]  [16]  [28].  This  leads  to  a  sense  of  community 
+where these nodes can collaborate and cooperate by ensuring a 
+self-enforcing  informal  governance  [12]  [28].  In  a  dense 
+network,  agents  are  likely  to  receive  good  recommendations 
+from  a  larger  number of other  agents [30].  Considering  figure 
+1, community x has a high density and community z has a low 
+density.  This  means  that  in  community  x  organisations  have 
+formed  a  strong  community  where  they  have  high  trust  and 
+reputation  established  due  to  the  alliances  and  collaborations 
+that  are  continuously  formed.  Because  density  requires 
+knowledge of the full network, it cannot be applied to a locally 
+stored social network graph of an ego neighborhood.  
+
+5) 
+
+Clustering Coefficient 
+
+A  node’s  clustering  coefficient  can  be  defined  as  the 
+proportion of alters that are themselves directly connected [18] 
+[28].  This  metric  therefore  quantifies  how  close  the  node’s 
+graph is to becoming a cluster or, in social networking terms, a 
+
+clique  [2].  This  can  be  used  in  ego  neighborhoods  such  as 
+community  w  or  x  in  Figure  1,  to  determine  the  strongest 
+community.  
+
+As organisations collaborate with other  organisations, they 
+form  stronger  trust  relationships  and  clusters  tend  to  form,  as 
+shown  in  Figure  1  [28].  Clustering  increases  the  transmission 
+efficiency in the network by giving nodes the ability to assess 
+all the information received. [28]. If nodes are clustered in trust 
+groups 
+of 
+recommendations  [11].  Clustering  can  form  strong  trusted 
+communities where the organisations in these communities are 
+collaborating  to  enhance  their  organisations  and  in-turn  the 
+entire  community.  With  this  in  mind,  the  reputation  of  these 
+organisations can be very accurate and reliable.  
+
+this  would 
+
+improve 
+
+quality 
+
+then 
+
+the 
+
+The  social  measures  discussed  so  far  have  been  used  in 
+trust  and  reputation  systems.  There  are  more  social  network 
+centrality  measures  that  have  not  been  exploited  for  trust  and 
+computation, which are discussed next.  
+
+IV.  INVESTIGATING UNEXPLOITED SOCIAL            
+
+METRIC CENTRALITIES 
+
+ratings 
+
+Social  network 
+
+centrality  measures 
+
+centrality  must  pass 
+
+indicate  how 
+communication  happens  within  a  social  network.  It  identifies 
+nodes that are in central positions within a social network. If a 
+node  with  high 
+and 
+recommendations to others, there exists a risk that the node can 
+compromise the information and behave opportunistically [10]. 
+To  gain  more  power  in  a  Digital  Business  Ecosystem,  a  node 
+may  fail  to pass  along all  important  information  to  nodes  that 
+are dependent on this information.  The node may believe that 
+it  would  be  worth  his  while  to  risk  his  position  of  power.  If 
+other nodes should find this out, the node will in time lose his 
+position  in  the  network.  The  node’s  centrality  therefore  will 
+decline.    There  are  two  such  centrality  measures  to  be 
+considered  namely  closeness  centrality  and  betweenness 
+centrality.  Consider  Figure  4  from  [26].  Node  p  has  the  best 
+closeness, whereas node h has the best betweenness.  
+
+Figure 4. Centrality measures  
+
+ 
+
+Not many trust and reputation systems specifically consider 
+these measures in their computations. Their effect on trust and 
+reputation is now discussed.  
+
+A.  Closeness Centrality 
+
+Freeman  identified  the  closeness  centrality  as  the  total 
+distance to or from all other nodes, where distance refers to the 
+number  of  links  along  the  shortest  path  [26].  Since  closeness 
+measures  the  distance  to  all  other  nodes,  then  the  shorter  this 
+distance is, the more central the node is [29].  
+
+If nodes are central but  have low trust, information  should 
+rather  flow  through  nodes  with  higher  trust  but  with  less 
+centrality. This could lead to information taking longer and less 
+efficient routes in the network [10]. Therefore, as a node’s trust 
+gets  lower,  so  will  the  nodes  closeness  centrality,  because  the 
+node will be bypassed so that a more trusted node can be used 
+to transmit the information. Closeness is related to shortest path 
+in  the  sense  that  if  a  node  is  closer  to  you,  the  indirect  trust 
+values might be more accurate and reliable [29]. Unfortunately, 
+closeness  centrality  is  uninformative  in  an  ego  neighborhood 
+network because of the limitation on network size.  
+
+B.  Betweenness Centrality 
+
+Betweenness centrality is the measurement of the extent to 
+which a node falls along a number of shortest paths connecting 
+other pairs of nodes [3] [18] [7] [29]. Figure 4 clearly indicates 
+that  node  h  is  such  a  node.  A  node  will  have  a  high 
+betweenness value based on the extent to which it exists on the 
+short  paths between  all other pairs of  nodes,  meaning  that  the 
+node will have control over these paths  [3]. High betweenness 
+nodes thus have the ability to facilitate interactions and control 
+information between unconnected nodes [7].  
+
+Nodes  with  high  betweenness  values  essentially  act  as 
+―brokers‖ or ―bridges‖. This is due to the fact that there are no 
+other  short  paths  that  can  bypass  this  node  with  a  high 
+betweenness  [3].  Therefore  nodes  with  high  betweenness 
+values  are  very  important  within  the  network  as  the  loss  of 
+these  nodes  can  disrupt  the  structure  of  the  network  [29]. 
+Should  a  node  with  a  high  betweenness  value  in  the  Digital 
+Business  Ecosystem  social  network  no  longer be  in existence, 
+this  would  impact  a  significant  number  of  organisations 
+negatively. The positions of nodes m and n in Figure 1 clearly 
+illustrate this. Should node m or n fail, there would be no path 
+by  which  companies  in  the  different  clusters  could  connect 
+with each other. This indicates how important these nodes are 
+in establishing and maintaining a robust network structure.  
+
+An interesting feature of betweenness is that it can be used 
+in both  sociocentric and  egocentric  networks [7].   This  means 
+that  regardless  of  how  the  network  and  the  trust  relationships 
+are viewed, i.e. globally or locally, the betweenness value of a 
+node can always be determined.  
+
+The  presence  of  bridges  in  the  social  network  of  Digital 
+Business  Ecosystem  present  more  business  opportunities  to 
+ensure that the Digital Business Ecosystem grows and evolves 
+to become more competitive. The question is what is the effect 
+of these central positions on trust and reputation? Betweenness 
+centrality has been addressed in the analysis of various topics, 
+such  as 
+transportation,  social  networks,  and  biological 
+networks, but to  the best of  the  knowledge of the  researchers, 
+no real work has specifically addressed betweenness centrality 
+with  reputation  except  for  the  work  of  Delaviz,  Andrade  and 
+Pouwelse [36]. They use the betweenness centrality of nodes in 
+
+the  BarterCast  reputation  mechanism  that  is  used  by  a 
+Bittorent-based 
+to  compute 
+reputation  not  from  the  perspective  of  a  node,  but  from  the 
+perspective of the node with the highest betweenness centrality.  
+
+file-sharing  client  Tribler 
+
+The  researchers  believe  that  betweenness  centrality  is  an 
+unexploited social network analysis measure that  indicates the 
+importance  of  a  node 
+in  a  network  where  reputation 
+mechanisms should treat such nodes differently because of the 
+central role that they can play.   
+
+The  next  section  describes  a  basic  trust  and  reputation 
+framework,  taking  into  account  the  nature  of  Digital  Business 
+Ecosystems.  
+
+V.  A FRAMEWORK FOR DIGITAL BUSINESS 
+
+ECOSYSTEM TRUST AND REPUTATION 
+
+A  Digital  Business  Ecosystem  framework  for  trust  and 
+reputation  is  now  defined  based  on  the  research  identified  in 
+this  paper.  Basic  assumptions  and  the  approach  are  defined. 
+The  manner  in  which  both  current  and  unexploited  centrality 
+measures can be used for trust and reputation is described. The 
+Digital  Business  Ecosystem  social  graph  is  defined  by  the 
+topology  shown  in  Figure  1.  This  is  the  global  view  of  the 
+social network graph, not visible to any single node or central 
+party.  Every  participant,  either  a  VSE  or  SME  being  either  a 
+consumer or  service,  is represented by  an  agent. These  agents 
+each build a local graph of its ego neighborhood as it interacts 
+with other  agents. The agents follow a local and decentralised 
+approach  to  trust  and  reputation.  Although  agents  act  in  a 
+decentralised  way,  clusters  tend  to  form,  resulting  in  strong 
+trust communities.  
+
+In  Digital  Business  Ecosystem  there  are  nodes  who  are 
+interested  in  building  communities.  They  are  represented  by 
+super-agents,  called  community  managers  [34],  who  collect 
+and  build  reputation  of  services  in  their  community.  Such 
+reputations  are  provided  to  any  the  agents  of  a  prospective 
+consumer of a service. In community x in Figure 1, Supplier B 
+may  be  such  a  node.  Super-agents  are  discovered  through 
+searches  if  agents  of  consumers  want  to  use  any  services 
+provided  in  community  x.  Super-agents  follow  a  centralized 
+approach to reputation, thereby ensuring a hybrid approach for 
+reputation management for a Digital Business Ecosystem.  
+
+At  a  community  level,  direct  trust  values  between  the 
+agents of consumers and those of nodes providing services are 
+used to determine trust. Degree and tie strength centralities are 
+used  to  provide  a  more  accurate  measure  of  the  trust  in  an 
+agent  of  a  node.  The  super-agent  thus  uses  the  direct  trust 
+values of agents of consumers to determine the reputation for a 
+specific  agent  of  a  node.  Between  communities,  super-agents 
+may  become  aware  of  a  much  larger  network  graph  requiring 
+the use of shortest path calculations.  
+
+The  trust  in  a  community  as  a  whole  is  important  to 
+consider  and  is  determined by  agents of  consumer  nodes. The 
+clustering coefficient of a super-agent gives an indication of the 
+strength  of  the  community.  Super-agents  need  to  behave 
+trustworthy  to  be  able  to  attract  more  consumers  to  its 
+community, 
+community. 
+Consumers  give  a  weight  to  the  super-agent’s  reputation 
+information about the nodes in its community.  
+
+thereby  building 
+
+a 
+
+stronger 
+
+In these environments, super-agents exert a large amount of 
+power  and  control  on  the  flow  of  information  in  the 
+environment.  A  super-agent  may  be  a  broker  between  agents 
+who  are  in  different  communities.  The  network  centrality  of 
+super-agents  thus  needs  to  be  taken  into  account  when  their 
+trust  and  reputation  is  determined.  The  main  focus  of  this 
+research is to identify how betweenness centrality can be used 
+to  enhance  Digital  Business  Ecosystem  trust  and  reputation. 
+Higher  betweenness  centrality  means  a  higher  contribution  of 
+the  node  in  connecting  other  nodes,  and  a  higher  flow  that 
+passes through it. 
+
+The  following  observations  provide  more  motivation  for 
+
+the focus of this research:  
+
+  Super-agents with high betweenness generally regard others 
+as  more  trustworthy  as  those  who  are  in  peripheral 
+positions, due to their relative control over the community.  
+
+ 
+
+If a super-agent has higher betweenness than others, and is 
+highly  trusted  by  agents  of  consumer  nodes,  it  should  be 
+treated with care as not to lose its benefits.   
+
+  The  power  that  a  super-agent  exerts  over  the  environment 
+should be carefully considered when trust and reputation is 
+computed and used.  
+
+  A  super-agent  can  provide  reliable  recommendations  for  a 
+greater  number  of  nodes,  thus,  enabling  collaboration 
+opportunities for highly detached nodes in the network. 
+
+To  date  little  research  has  been  done  to  determine  how 
+betweenness  centrality  can  enhance  Digital  Business 
+Ecosystem  trust  and  reputation.  Research  needs  to  be  done  to 
+evaluate  the  effect  of  betweenness  when  combined  with  trust 
+and reputation computations. This could be valuable for Digital 
+Business Ecosystems who follow a hybrid approach as the loss 
+of  trust  in  these  nodes  could  lead  to  the  deterioration  of 
+communities.  This  is  of  importance  in  Digital  Business 
+Ecosystems  where  nodes  such  as  VSEs  and  SMEs  need  to 
+survive and generate profit in a competitive environment.  
+
+There  is  much  future  research  to  be  done.  Next  this 
+research  aims  to  focus  on  investigating  various  betweenness 
+centrality  computations  to  determine  the  best  one  to  use  for 
+Digital  Business  Ecosystem  trust  and  reputation.  Simulations 
+will  be  performed  to  experiment  with  betweenness  centrality 
+and its influence on trust and reputation.  
+
+VI.  CONCLUSION 
+
+This  paper  gives  a  background  on  Digital  Business 
+Ecosystems  and  how  trust and  reputation are  to be  considered 
+in  conjunction  with  social  network  centrality  measures.  A 
+contribution  is  made  by  the  discussion  of  social  network 
+centrality  measures  in  conjunction  with  trust  and  reputation. 
+Social  network  centrality  metrics  such  as  degree,  tie  strength, 
+shortest  path,  clustering  coefficient,  and  density  are  identified 
+and  their  effect  on  trust  and  reputation  considered.  Two 
+important  and  popular  social  network  centralities,  not  yet 
+considered  for  trust  and  reputation  are  identified  namely 
+closeness  and  betweenness  centrality.  Of  these,  betweenness 
+centrality  is  identified  an  unexploited  measure  that  should  be 
+researched. Finally, a basic framework was defined that shows 
+
+how social network metrics can be used to support a hybrid and 
+local  approach  to  Digital  Business  Ecosystem  trust  and 
+reputation.  Future  research  aims  to  investigate  the  effect  of 
+betweenness  centrality  in  the  formation  and  growth  of  trusted 
+communities.    
+
+ACKNOWLEDGMENT 
+
+The  support  of  SAP  Research  Pretoria/Meraka  Unit 
+of  Technology  Development  and  the  National  Research 
+Foundation  (NRF)  under  Grant  number  66302  towards  this 
+research  is  hereby  acknowledged.  Opinions  expressed  and 
+conclusions  arrived  at  are  solely 
+the  authors 
+and 
+SAP 
+be 
+Research/Meraka UTD or the NRF. 
+
+those  of 
+attributed 
+
+necessarily 
+
+cannot 
+
+to 
+
+REFERENCES 
+
+[1] 
+
+J.  Bentahar,  B.  Khosravifar,  and  M.  Gomrokchi,  M,  ―Social  network-
+based  trust  for  agent-based  services,‖  WAINA  '09  Proceedings  of  the 
+2009  International  Conference  on  Advanced  Information  Networking 
+and Applications Workshops,  pp. 298-303. 
+
+[2]  C.C. Bilgin, ―Dynamic network evolution: models , clustering , anomaly 
+
+detection‖, Technical Report, 2008, Rensselaer University, NY 
+
+[3]  S.P.  Borgatti,  ―On  social  network  analysis  in  a  supply  chain  context,‖ 
+University  of  Kentucky,  Journal  of  Supply  Chain  Management,  45(2), 
+pp. 1-17. 
+
+[4]  V.  Buskens,  ―The  social  structure  of  trust,‖  Social  Networks,  Volume 
+
+20, Issue 3, July 1998, Pages 265-289 
+
+[5] 
+
+J.S.  Coleman,  ―Social  capital  in  the  creation  of  human  capital,‖  The 
+American Journal of Sociology, 94, pp.95–120. 
+
+[6]  D. McKnight, and N. Chervany, ―The Meanings of Trust,‖ University of 
+Minnesota,  Management  Information  Systems  Reseach  Center,  Tech, 
+Rep, MISRC Working Paper Series 96-04, 1996. 
+
+[7]  E.M.  Daly,  and  M.  Haahr,  ―Social  network  analysis  for  routing  in 
+disconnected  delay-tolerant  MANETs,‖  Proceedings  of  the  8th  ACM 
+international symposium on Mobile ad hoc networking and computing - 
+MobiHoc ’07, 32, New York, New York, USA, ACM Press. 
+
+[8]  Z.  Despotovic,  ―Building  trust-aware  P2P  systems:  from  trust  and 
+
+reputation management to decentralised e-commerce applications‖. 
+
+[9]  F.  Dong,  L.  Huang, W.  Yang,  Y.  Zhu, and  J. Wang,  ―A  general  model 
+for  trust  and  reputation  systems,‖  Computer  Science  and  Information 
+Technology  (ICCSIT),  2010  3rd  IEEE  International  Conference,  vol.4,  
+pp.454-459, 9-11 July 2010. 
+
+[10]  S.  Droege,  L.C.  Dong,  ―The  Centrality  Efficiency  Index:  a  new  social 
+network analysis measure,‖ Review of Business Research, 2007 Volume 
+VII, Number 2, pp.164-170. 
+
+[11]  T. Dubois, C. Park, and J. Kleint, ―Improving recommendation accuracy 
+by clustering social networks with trust,‖  In ACM RecSys'09 Workshop 
+on Recommender Systems & the Social Web (October 2009) . 
+
+[12]  J.H.  Dyer,  H.  Singh,  ―The  relational  view:  Cooperative  strategy  and 
+advantage,‖  Acad. 
+
+interorganizational 
+
+competitive 
+
+sources  of 
+Management Rev. 23, pp.  660–679. 
+
+[13]  L.C. Freeman, ―Centrality in social networks: Conceptual clarification,‖ 
+
+Social Networks, 1979. 
+
+[14]  J.  Golbeck,  ―Computing  with 
+
+trust:  Definition,  properties,  and 
+
+algorithms,‖ 2006 Securecomm and Workshops, 1. 
+
+[15]  M.  Granovetter,  "The  strength  of  weak  ties,"  American  Journal  of 
+
+Sociology, 1973, 78, pp.1360 1380. 
+
+[16]  M.  Granovetter,  ―Problems  of  explanation  in  economic  sociology,‖  N. 
+Nohria,  R.  Eccles,  eds,  Networks  and  Organizations:  Structure,  Form, 
+and Action. Harvard Business School Press, Boston, MA, pp. 25–56. 
+
+[17]  C. Hang, Y. Wang, and M.P. Singh, ―Operators for propagating trust and 
+their  evaluation  in  social  networks,‖  Proc.  of  8th  Int.  Conf.  on 
+
+ 
+
+Autonomous  Agents  and  Multiagent  Systems  (AAMAS  2009),  pp. 
+1025-1032. 
+
+[18]  A. Hupa, R. Krzysztof, A. Wierzbicki, D. Anwitaman, ―Interdisciplinary 
+matchmaking: Choosing  collaborators  by  skill, acquaintance  and  trust,‖ 
+Computational Social Network Analysis. 
+
+[19]  M.  Ion,  A.  Danzi,  H.  Koshutanski,  and  L.  Telesca,  ―A  peer-to-peer 
+multidimensional  trust  model  for  digital  ecosystems,‖  2008  2nd  IEEE 
+International  Conference  on  Digital  Ecosystems  and  Technologies,  pp. 
+461-469. 
+
+[20]  A.  Jøsang,  R.  Ismail,  and  C.  Boyd,  "A  survey  of  trust  and  reputation 
+systems for online service provision," Decision Support Systems, 43(2), 
+pp. 618-644. 
+
+[21]  A.  Jøsang,  E.  Gray,  and M.  Kinateder,  M.  ―Simplification and  analysis 
+
+of transitive trust networks,‖ Data Communications, pp. 1-26. 
+
+[22]  G.  Liu, Y. Wang, and M.A. Orgun, ―Optimal social trust path selection 
+
+in complex social networks,‖ Artificial Intelligence, pp. 1391-1398. 
+
+[23]  M.  Lurgi,  and  F.  Estanyol,  ―MADBE  :  a  Multi-Agent  Digital  Business 
+Ecosystem,‖    Digital  Ecosystems  and  Technologies  (DEST),  2010  4th 
+IEEE International Conference, vol., no., pp.262-267, 13-16 April 2010. 
+
+[24]  Y.  Matsuo,  and  H  Yamamoto,  H.  ―Community  gravity  :  Measuring 
+bidirectional  effects  by  trust  and  rating  on  online  social  networks,‖ 
+Social Networks, pp. 751-760. 
+
+[25]  Z.  Noorian,  and M.  Ulieru,  ―The  state  of  the  art  in trust  and  reputation 
+systems: A framework for comparison,‖ Electronic Commerce Research, 
+5(2). 
+
+[26]  D.  Ortiz-Arroyo,  ―Computational  Social  Network  Analysis,‖  (A. 
+
+Abraham, A. E. Hassanien, & V. Snasel, Eds.). Springerlink. 
+
+[27]  M.  Petrou,  S.  Gautam,  and  K.N.  Giannoutakis,  ―Simulating  a  digital 
+business ecosystem,‖ Computational Finance and its Applications II, 43, 
+pp. 277-287. Southampton, UK: WIT Press. 
+
+[28]  M.A.  Schilling,  and  C.  Phelps,  ―Interfirm  collaboration  networks  :  The 
+innovation,‖ 
+
+large-scale  network  structure  on 
+
+firm 
+
+impact  of 
+Management Science, 53(7), pp. 1113-1126. 
+
+[29]  I.  Varlamis,  M.  Eirinaki,  and  M.  Louta,  ―A  Study  on  social  network 
+metrics  and  their  application  in  trust  networks,‖  2010  International 
+Conference on Advances in Social Networks Analysis and Mining, 168. 
+
+[30]  F.E. Walter,  S. Battiston,  and  F.  Schweitzer,  ―A  model  of  a trust-based 
+recommendation system on a social network,‖ Autonomous Agents and 
+Multi-Agent Systems, 16(1), pp. 57-74. 
+
+[31]  C.N. Ziegler, and G. Lausen, ―Propagation models for trust and distrust 
+in social networks,‖ Information Systems Frontiers, 7(4-5), pp. 337-358. 
+
+[32]  K. Zolfaghar, and A. Aghaie, ―Evolution of trust networks in social web 
+applications using  supervised  learning,‖  Procedia  Computer  Science, 3, 
+833.  and  Magnetism,  3rd  ed.,  vol.  2.  Oxford:  Clarendon,  1892,  pp.68–
+73. 
+
+[33]  Z. Gyongyi, H. Garcia-Molina, and J. Pedersen, ―Combating web spam 
+with TrustRank,‖ In proceedings of the 30th International Conference on 
+Very Large Data Bases, pp. 271–279. 
+
+[34]  Y.  Wang,  J.  Zhang  and  J.  Vassileva,  ―Super-Agent  based  reputation 
+management  with  a  practical  reward  mechanism  in  decentralised 
+systems,‖  4th  IFIP  WG  11.11  International  Conference  on  Trust 
+Management, June 14-18, 2010, Morioka, Iwate, Japan  
+
+[35]  Avrachenkov  C,  Nemirovsky  D,  and  Pham  K.  2007.  A  survey  on 
+to  graph  based  reputation  measures.  In 
+distributed  approaches 
+Proceedings  of  the  2nd  international  conference  on  Performance 
+evaluation methodologies and tools (ValueTools '07). ICST (Institute for 
+Computer  Sciences,  Social-Informatics  and  Telecommunications 
+Engineering), ICST, Brussels, Belgium, Belgium, Article 82 , 9 pages. 
+
+[36]  R.  Delaviz,  N.  Andrade,  &  J.  Pouwelse,  ―Improving  accuracy  and 
+coverage  in  an  Internet-deployed  reputation  mechanism,‖  2010  IEEE 
+Internation conference on Peer-to-Peer Computing(P2P),pp.0-8.  
+
+[37]  Dini p, Nicolai A, The Digital Business Ecosystem, FP6 IST e-Business 
+
+Integrated Project, http://www.digital-ecosystems.org /cluster/ dbe/ 
+dbe_summary_cc.pdf 
+
+
